@@ -1,4 +1,4 @@
-<img src="website/static/operator_logo_sdk_color.svg" height="125px"></img>
+<img src="https://raw.githubusercontent.com/operator-framework/operator-sdk/master/website/static/operator_logo_sdk_color.svg" height="125px"></img>
 
 # Java Operator SDK
 
