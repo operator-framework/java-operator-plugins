@@ -1,6 +1,6 @@
 # How to contribute
 
-Java Operator SDK is Apache 2.0 licensed and accepts contributions via GitHub pull requests. This document outlines some of the conventions on commit message formatting, contact points for developers, and other resources to help get contributions into java-operator-sdk.
+Java Operator is Apache 2.0 licensed and accepts contributions via GitHub pull requests. This document outlines some of the conventions on commit message formatting, contact points for developers, and other resources to help get contributions into the Java Operator.
 
 ## Email and Chat
 
@@ -12,7 +12,7 @@ Java Operator SDK is Apache 2.0 licensed and accepts contributions via GitHub pu
     https://github.com/operator-framework/java-operator.git
 
 - If you want to build/run the project, use command
-    mvn clean install
+    `TBD`
 
 ## Reporting bugs and creating issues
 
@@ -26,7 +26,7 @@ This is a rough outline of what a contributor's workflow looks like:
 - Make commits of logical units.
 - Make sure commit messages are in the proper format (see below).
 - Check your work after running all Unit and Regression Tests. You should run all the unit tests by hitting the following command
-    mvn clean install 
+    `TBD`
 - Push changes in a topic branch to a personal fork of the repository.
 - Submit a pull request to operator-framework/operator-sdk.
 - The PR must receive a LGTM from two maintainers found in the MAINTAINERS file.
@@ -35,7 +35,7 @@ Thanks for contributing!
 
 ### Code style
 
-The coding style suggested by the Golang community is used in operator-sdk. See the [style doc](https://google.github.io/styleguide/javaguide.html) for details.
+The coding style suggested by the Java community is used in Java operator. See the [style doc](https://google.github.io/styleguide/javaguide.html) for details.
 
 Please follow this style to make operator-sdk easy to review, maintain and develop.
 
@@ -67,7 +67,7 @@ The first line is the subject and should be no longer than 70 characters, the se
 
 ### PR Review
 
-Your PR will get reviewed soon from the maintainers of the project. If they suggest changes, do all the changes, commit the changes, rebase the branch, squash the commits and push the changes. If all will be fine, your PR will be merged.
+Your PR will get reviewed soon from the maintainers of the project. If they suggest changes, do all the changes, commit the changes, rebase the branch, squash the commits and push the changes. If all is fine, your PR will be merged.
 
 That's it! Thank you for your contribution!
 
