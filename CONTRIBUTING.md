@@ -71,7 +71,7 @@ Your PR will get reviewed soon from the maintainers of the project. If they sugg
 
 That's it! Thank you for your contribution!
 
-Feel free to suggest changes to this documentation. If you want to discuss something with maintainers, you can ask us on a GitHub [issue](https://github.com/laxmikantbpandhare/java-operator.git)
+Feel free to suggest changes to this documentation. If you want to discuss something with maintainers, you can ask us on a GitHub [issue](https://github.com/operator-framework/java-operator/issues)
 
 ## Documentation
 
