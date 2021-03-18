@@ -15,6 +15,8 @@ const (
 	imageName = "controller:latest"
 )
 
+// This file represents the scaffolding done by this init command
+
 var _ cmdutil.Scaffolder = &initScaffolder{}
 
 type initScaffolder struct {

@@ -30,6 +30,8 @@ var (
 )
 
 var (
+	// TODO: if we use all the full interface this could be changed to
+	// _ plugin.Full = Plugin{}
 	_ plugin.Plugin    = Plugin{}
 	_ plugin.Init      = Plugin{}
 	_ plugin.CreateAPI = Plugin{}

@@ -28,6 +28,8 @@ import (
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
 )
 
+// This file represents the CLI for this plugin.
+
 type initSubcommand struct {
 	config config.Config
 
@@ -57,6 +59,7 @@ Writes the following files:
 func (p *initSubcommand) BindFlags(fs *pflag.FlagSet) {
 	fs.StringVar(&p.domain, "domain", "my.domain", "domain for groups")
 	fs.StringVar(&p.projectName, "project-name", "", "name of this project")
+	// TODO: include flags required for this plugin
 }
 
 func (p *initSubcommand) InjectConfig(c config.Config) {
@@ -66,6 +69,7 @@ func (p *initSubcommand) InjectConfig(c config.Config) {
 func (p *initSubcommand) Run(fs machinery.Filesystem) error {
 	fmt.Println("init called")
 
+	// TODO: any configuration that needs to be updated happens here
 	if err := p.config.SetProjectName(p.projectName); err != nil {
 		return err
 	}
@@ -74,6 +78,7 @@ func (p *initSubcommand) Run(fs machinery.Filesystem) error {
 		return err
 	}
 
+	// TODO: this will run the scaffolders
 	if err := cmdutil.Run(p, fs); err != nil {
 		return err
 	}
@@ -82,6 +87,7 @@ func (p *initSubcommand) Run(fs machinery.Filesystem) error {
 }
 
 func (p *initSubcommand) Validate() error {
+	// TODO: validate the conditions you expect before running the plugin
 	return nil
 }
 
@@ -90,5 +96,6 @@ func (p *initSubcommand) GetScaffolder() (cmdutil.Scaffolder, error) {
 }
 
 func (p *initSubcommand) PostScaffold() error {
+	// TODO: add anything you want to do AFTER the scaffolding has happened.
 	return nil
 }
