@@ -18,9 +18,11 @@ package v1
 
 import (
 	"fmt"
+
 	"github.com/spf13/pflag"
 
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
+	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
 )
 
@@ -51,7 +53,7 @@ func (p *initSubcommand) InjectConfig(c config.Config) {
 	p.config = c
 }
 
-func (p *initSubcommand) Run() error {
+func (p *initSubcommand) Run(fs machinery.Filesystem) error {
 	fmt.Println("init called")
 	return nil
 }
