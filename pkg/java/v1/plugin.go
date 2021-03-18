@@ -29,7 +29,11 @@ var (
 	pluginVersion            = plugin.Version{Number: 1}
 )
 
-var _ plugin.Full = Plugin{}
+var (
+	_ plugin.Plugin    = Plugin{}
+	_ plugin.Init      = Plugin{}
+	_ plugin.CreateAPI = Plugin{}
+)
 
 // Plugin implements the plugin.Full interface
 type Plugin struct {
