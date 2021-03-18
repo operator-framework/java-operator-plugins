@@ -18,9 +18,14 @@ package v1
 
 import (
 	"fmt"
+
 	"github.com/spf13/pflag"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
+	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
+
+	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/internal/kubebuilder/cmdutil"
+	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/scaffolds"
 )
 
 type createAPISubcommand struct {
@@ -47,7 +52,19 @@ func (p *createAPISubcommand) InjectConfig(c config.Config) {
 	p.config = c
 }
 
-func (p *createAPISubcommand) Run() error {
+func (p *createAPISubcommand) Run(fs machinery.Filesystem) error {
 	fmt.Println("create called")
+	return nil
+}
+
+func (p *createAPISubcommand) Validate() error {
+	return nil
+}
+
+func (p *createAPISubcommand) GetScaffolder() (cmdutil.Scaffolder, error) {
+	return scaffolds.NewCreateAPIScaffolder(), nil
+}
+
+func (p *createAPISubcommand) PostScaffold() error {
 	return nil
 }
