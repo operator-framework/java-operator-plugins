@@ -35,8 +35,8 @@ var _ plugin.Full = Plugin{}
 type Plugin struct {
 	initSubcommand
 	createAPISubcommand
-	createWebhookSubcommand
-	editSubcommand
+	// createWebhookSubcommand
+	// editSubcommand
 }
 
 // Name returns the name of the plugin
