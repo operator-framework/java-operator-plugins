@@ -10,7 +10,7 @@ type OperatorFile struct {
 
 func (f *OperatorFile) SetTemplateDefaults() error {
 	if f.Path == "" {
-		f.Path = "Main.java"
+		f.Path = "MemcachedOperator.java"
 	}
 
 	f.TemplateBody = operatorTemplate
