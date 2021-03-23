@@ -6,6 +6,7 @@ import (
 
 	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/internal/kubebuilder/cmdutil"
 	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/scaffolds/internal/templates"
+	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/util"
 )
 
 const (
@@ -47,6 +48,9 @@ func (s *initScaffolder) Scaffold() error {
 	)
 
 	return scaffold.Execute(
-		&templates.OperatorFile{},
+		&templates.OperatorFile{
+			Package:      util.ReverseDomain(s.config.GetDomain()),
+			OperatorName: util.ToClassname(s.config.GetProjectName()),
+		},
 	)
 }
