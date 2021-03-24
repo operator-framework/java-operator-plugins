@@ -52,7 +52,11 @@ func (s *initScaffolder) Scaffold() error {
 			Package:      util.ReverseDomain(s.config.GetDomain()),
 			OperatorName: util.ToClassname(s.config.GetProjectName()),
 		},
-		&templates.PomXmlFile{},
+		&templates.PomXmlFile{
+			Package:         util.ReverseDomain(s.config.GetDomain()),
+			ProjectName:     s.config.GetProjectName(),
+			OperatorVersion: "0.0.1",
+		},
 		&templates.DockerFile{},
 	)
 }
