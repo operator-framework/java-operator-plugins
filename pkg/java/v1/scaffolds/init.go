@@ -58,5 +58,6 @@ func (s *initScaffolder) Scaffold() error {
 			OperatorVersion: "0.0.1",
 		},
 		&templates.DockerFile{},
+		&templates.GitIgnore{},
 	)
 }
