@@ -12,13 +12,13 @@ var _ file.Template = &ApplicationPropertiesFile{}
 
 type ApplicationPropertiesFile struct {
 	file.TemplateMixin
-	OrgName         string
-	ProjectName     string
+	OrgName     string
+	ProjectName string
 }
 
 const (
 	FilePathSeparator = string(filepath.Separator)
-	javaPaths = "src" + FilePathSeparator + "main" + FilePathSeparator + "resources"
+	javaPaths         = "src" + FilePathSeparator + "main" + FilePathSeparator + "resources"
 )
 
 func prependJavaPathResources(filename string) string {

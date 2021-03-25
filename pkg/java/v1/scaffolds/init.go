@@ -59,7 +59,7 @@ func (s *initScaffolder) Scaffold() error {
 		},
 		&templates.GitIgnore{},
 		&templates.ApplicationPropertiesFile{
-			ProjectName:     s.config.GetProjectName(),
+			ProjectName: s.config.GetProjectName(),
 		},
 	)
 }
