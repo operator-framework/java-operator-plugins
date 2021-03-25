@@ -57,7 +57,9 @@ func (s *initScaffolder) Scaffold() error {
 			ProjectName:     s.config.GetProjectName(),
 			OperatorVersion: "0.0.1",
 		},
-		&templates.DockerFile{},
 		&templates.GitIgnore{},
+		&templates.ApplicationPropertiesFile{
+			ProjectName:     s.config.GetProjectName(),
+		},
 	)
 }

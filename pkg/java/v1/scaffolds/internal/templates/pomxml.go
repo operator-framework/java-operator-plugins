@@ -75,6 +75,11 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
       <artifactId>operator-framework</artifactId>
       <version>${java-sdk.version}</version>
     </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-container-image-jib</artifactId>
+      <version>${quarkus.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
