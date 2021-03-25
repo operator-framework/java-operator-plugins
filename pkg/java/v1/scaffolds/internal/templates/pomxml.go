@@ -48,6 +48,17 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
       <quarkus.native.builder-image>quay.io/quarkus/ubi-quarkus-native-image:19.3.1-java11</quarkus.native.builder-image>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-bom</artifactId>
+        <version>${quarkus.version}</version>
+        <type>pom</type>
+	    <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>io.quarkiverse.operatorsdk</groupId>
@@ -64,12 +75,6 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
       <artifactId>operator-framework</artifactId>
       <version>${java-sdk.version}</version>
     </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-bom</artifactId>
-      <version>${quarkus.version}</version>
-      <type>pom</type>
-      </dependency>
   </dependencies>
 
   <build>
