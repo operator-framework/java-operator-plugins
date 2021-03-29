@@ -17,33 +17,45 @@
 package v1
 
 import (
+
+	"errors"
 	"fmt"
 
 	"github.com/spf13/pflag"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
+	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
+	pluginutil "sigs.k8s.io/kubebuilder/v3/pkg/plugin/util"
 
-	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/internal/kubebuilder/cmdutil"
 	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/scaffolds"
 )
 
+type createAPIOptions struct {
+	CRDVersion         string
+}
+
 type createAPISubcommand struct {
-	config config.Config
+	config   config.Config
+	resource *resource.Resource
+	options  createAPIOptions
+}
+
+
+func (opts createAPIOptions) UpdateResource(res *resource.Resource) {
+	res.API = &resource.API{
+		CRDVersion: opts.CRDVersion,
+		Namespaced: true,
+	}
+
+	// Ensure that Path is empty and Controller false as this is not a Go project
+	res.Path = ""
+	res.Controller = false
 }
 
 var (
 	_ plugin.CreateAPISubcommand = &createAPISubcommand{}
 )
-
-func (p createAPISubcommand) UpdateContext(ctx *plugin.Context) {
-	ctx.Description = `Scaffold a Kubernetes API by creating a Resource definition and / or a Controller.
-
-create resource will prompt the user for if it should scaffold the Resource and / or Controller.  To only
-scaffold a Controller for an existing Resource, select "n" for Resource.  To only define
-the schema for a Resource without writing a Controller, select "n" for Controller.
-`
-}
 
 func (p *createAPISubcommand) BindFlags(fs *pflag.FlagSet) {
 }
@@ -61,10 +73,43 @@ func (p *createAPISubcommand) Validate() error {
 	return nil
 }
 
-func (p *createAPISubcommand) GetScaffolder() (cmdutil.Scaffolder, error) {
-	return scaffolds.NewCreateAPIScaffolder(), nil
+func (p *createAPISubcommand) PostScaffold() error {
+	return nil
 }
 
-func (p *createAPISubcommand) PostScaffold() error {
+func (p *createAPISubcommand) Scaffold(fs machinery.Filesystem) error {
+	scaffolder := scaffolds.NewCreateAPIScaffolder(p.config, *p.resource)
+	scaffolder.InjectFS(fs)
+	if err := scaffolder.Scaffold(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *createAPISubcommand) InjectResource(res *resource.Resource) error {
+	p.resource = res
+
+	p.options.UpdateResource(p.resource)
+
+	if err := p.resource.Validate(); err != nil {
+		return err
+	}
+
+	// Check that resource doesn't have the API scaffolded
+	if res, err := p.config.GetResource(p.resource.GVK); err == nil && res.HasAPI() {
+		return errors.New("the API resource already exists")
+	}
+
+	// Check that the provided group can be added to the project
+	if !p.config.IsMultiGroup() && p.config.ResourcesLength() != 0 && !p.config.HasGroup(p.resource.Group) {
+		return fmt.Errorf("multiple groups are not allowed by default, to enable multi-group set 'multigroup: true' in your PROJECT file")
+	}
+
+	// Selected CRD version must match existing CRD versions.
+	if pluginutil.HasDifferentCRDVersion(p.config, p.resource.API.CRDVersion) {
+		return fmt.Errorf("only one CRD version can be used for all resources, cannot add %q", p.resource.API.CRDVersion)
+	}
+
 	return nil
 }

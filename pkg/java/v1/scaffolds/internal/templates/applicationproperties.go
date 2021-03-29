@@ -5,13 +5,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	"sigs.k8s.io/kubebuilder/v3/pkg/model/file"
+	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
+
 )
 
-var _ file.Template = &ApplicationPropertiesFile{}
+var _ machinery.Template = &ApplicationPropertiesFile{}
 
 type ApplicationPropertiesFile struct {
-	file.TemplateMixin
+	machinery.TemplateMixin
 	OrgName     string
 	ProjectName string
 }

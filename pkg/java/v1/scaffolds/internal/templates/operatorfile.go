@@ -5,13 +5,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"sigs.k8s.io/kubebuilder/v3/pkg/model/file"
+	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 )
 
-var _ file.Template = &OperatorFile{}
+var _ machinery.Template = &OperatorFile{}
 
 type OperatorFile struct {
-	file.TemplateMixin
+	machinery.TemplateMixin
 
 	// Package is the source files package
 	Package string

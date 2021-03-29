@@ -1,12 +1,12 @@
 package scaffolds
 
 import (
+	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/util"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 
-	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/internal/kubebuilder/cmdutil"
 	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/scaffolds/internal/templates"
-	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/util"
+	"sigs.k8s.io/kubebuilder/v3/pkg/plugins"
 )
 
 const (
@@ -18,15 +18,15 @@ const (
 
 // This file represents the scaffolding done by this init command
 
-var _ cmdutil.Scaffolder = &initScaffolder{}
+var _ plugins.Scaffolder = &initScaffolder{}
 
 type initScaffolder struct {
 	fs     machinery.Filesystem
 	config config.Config
 }
 
-// NewInitScaffolder returns a new Scaffolder for project initialization operations
-func NewInitScaffolder(config config.Config) cmdutil.Scaffolder {
+// NewInitScaffolder returns a new plugins.Scaffolder for project initialization operations
+func NewInitScaffolder(config config.Config) plugins.Scaffolder {
 	return &initScaffolder{
 		config: config,
 	}
