@@ -4,7 +4,6 @@ import (
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 )
 
-
 var _ machinery.Template = &PomXmlFile{}
 
 type PomXmlFile struct {

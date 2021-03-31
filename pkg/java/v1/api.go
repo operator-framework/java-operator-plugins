@@ -17,7 +17,6 @@
 package v1
 
 import (
-
 	"errors"
 	"fmt"
 
@@ -32,7 +31,7 @@ import (
 )
 
 type createAPIOptions struct {
-	CRDVersion         string
+	CRDVersion string
 }
 
 type createAPISubcommand struct {
@@ -40,7 +39,6 @@ type createAPISubcommand struct {
 	resource *resource.Resource
 	options  createAPIOptions
 }
-
 
 func (opts createAPIOptions) UpdateResource(res *resource.Resource) {
 	res.API = &resource.API{

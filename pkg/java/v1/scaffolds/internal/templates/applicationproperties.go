@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
-
 )
 
 var _ machinery.Template = &ApplicationPropertiesFile{}
