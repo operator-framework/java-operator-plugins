@@ -77,7 +77,7 @@ public class {{ .ClassName }}Controller implements ResourceController<{{ .ClassN
 
     @Override
     public DeleteControl deleteResource({{ .ClassName }} resource, Context<{{ .ClassName }}> context) {
-	    // nothing to do here...
+        // nothing to do here...
         // framework takes care of deleting the resource object
         // k8s takes care of deleting deployment and pods because of ownerreference set
         return DeleteControl.DEFAULT_DELETE;

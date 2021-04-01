@@ -38,6 +38,6 @@ const modelStatusTemplate = `package {{ .Package }};
 
 public class {{ .ClassName }}Status {
 
-	// Add Status information here
+    // Add Status information here
 }
 `

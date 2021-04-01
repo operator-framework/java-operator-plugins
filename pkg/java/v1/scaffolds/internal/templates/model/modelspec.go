@@ -39,6 +39,6 @@ const modelSpecTemplate = `package {{ .Package }};
 
 public class {{ .ClassName }}Spec {
 
-	// Add Spec information here
+    // Add Spec information here
 }
 `
