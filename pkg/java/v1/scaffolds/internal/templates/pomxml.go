@@ -53,11 +53,18 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-client-bom</artifactId>
+        <version>${fabric8-client.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-bom</artifactId>
         <version>${quarkus.version}</version>
         <type>pom</type>
-	    <scope>import</scope>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -71,6 +78,10 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
       <groupId>io.fabric8</groupId>
       <artifactId>crd-generator-apt</artifactId>
       <version>${fabric8-client.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-common</artifactId>
     </dependency>
     <dependency>
       <groupId>io.javaoperatorsdk</groupId>

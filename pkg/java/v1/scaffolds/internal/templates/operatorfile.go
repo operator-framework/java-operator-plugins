@@ -2,9 +2,9 @@ package templates
 
 import (
 	"fmt"
-	"path/filepath"
 	"strings"
 
+	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/scaffolds/internal/templates/util"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 )
 
@@ -20,19 +20,6 @@ type OperatorFile struct {
 	OperatorName string
 }
 
-const (
-	FilePathSep = string(filepath.Separator)
-	javaPath    = "src" + FilePathSep + "main" + FilePathSep + "java"
-)
-
-func prependJavaPath(filename string, pkg string) string {
-	return javaPath + FilePathSep + pkg + FilePathSep + filename
-}
-
-func asPath(s string) string {
-	return strings.ReplaceAll(s, ".", FilePathSep)
-}
-
 func (f *OperatorFile) SetTemplateDefaults() error {
 	if f.OperatorName == "" {
 		return fmt.Errorf("invalid operator name")
@@ -40,9 +27,9 @@ func (f *OperatorFile) SetTemplateDefaults() error {
 
 	if f.Path == "" {
 		if strings.HasSuffix(strings.ToLower(f.OperatorName), "operator") {
-			f.Path = prependJavaPath(f.OperatorName+".java", asPath(f.Package))
+			f.Path = util.PrependJavaPath(f.OperatorName+".java", util.AsPath(f.Package))
 		} else {
-			f.Path = prependJavaPath(f.OperatorName+"Operator.java", asPath(f.Package))
+			f.Path = util.PrependJavaPath(f.OperatorName+"Operator.java", util.AsPath(f.Package))
 		}
 	}
 

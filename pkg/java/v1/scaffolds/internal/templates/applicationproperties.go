@@ -2,10 +2,10 @@ package templates
 
 import (
 	"fmt"
-	"path/filepath"
-	"strings"
 
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
+
+	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/scaffolds/internal/templates/util"
 )
 
 var _ machinery.Template = &ApplicationPropertiesFile{}
@@ -16,26 +16,13 @@ type ApplicationPropertiesFile struct {
 	ProjectName string
 }
 
-const (
-	FilePathSeparator = string(filepath.Separator)
-	javaPaths         = "src" + FilePathSeparator + "main" + FilePathSeparator + "resources"
-)
-
-func prependJavaPathResources(filename string) string {
-	return javaPaths + FilePathSeparator + filename
-}
-
-func asResourcesPath(s string) string {
-	return strings.ReplaceAll(s, ".", FilePathSeparator)
-}
-
 func (f *ApplicationPropertiesFile) SetTemplateDefaults() error {
 	if f.ProjectName == "" {
 		return fmt.Errorf("invalid Application Properties name")
 	}
 
 	if f.Path == "" {
-		f.Path = prependJavaPathResources("application.properties")
+		f.Path = util.PrependResourcePath("application.properties")
 	}
 
 	f.TemplateBody = ApplicationPropertiesTemplate
