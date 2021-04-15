@@ -18,12 +18,13 @@ package v1
 
 import (
 	"fmt"
-	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/scaffolds"
-	"github.com/spf13/pflag"
-	"k8s.io/apimachinery/pkg/util/validation"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/quarkus/v1/scaffolds"
+	"github.com/spf13/pflag"
+	"k8s.io/apimachinery/pkg/util/validation"
 
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"

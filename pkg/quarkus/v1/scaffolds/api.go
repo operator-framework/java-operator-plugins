@@ -8,9 +8,9 @@ import (
 	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugins"
 
-	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/scaffolds/internal/templates/controller"
-	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/scaffolds/internal/templates/model"
-	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/util"
+	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/quarkus/v1/scaffolds/internal/templates/controller"
+	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/quarkus/v1/scaffolds/internal/templates/model"
+	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/quarkus/v1/util"
 )
 
 type apiScaffolder struct {

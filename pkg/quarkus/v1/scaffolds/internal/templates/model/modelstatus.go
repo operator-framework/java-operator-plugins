@@ -3,7 +3,7 @@ package model
 import (
 	"fmt"
 
-	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1/scaffolds/internal/templates/util"
+	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/quarkus/v1/scaffolds/internal/templates/util"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 )
 

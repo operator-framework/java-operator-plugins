@@ -22,7 +22,7 @@ github.com/java-operator-sdk/kubebuilder-plugin => /Users/sushah/go/src/github.c
 - Add the java-operator-sdk import
 
 ```
-javav1 "github.com/java-operator-sdk/kubebuilder-plugin/pkg/java/v1"
+javav1 "github.com/java-operator-sdk/kubebuilder-plugin/pkg/quarkus/v1"
 ```
 
 - Introduce the java bundle in `GetPluginsCLIAndRoot()` method. 
