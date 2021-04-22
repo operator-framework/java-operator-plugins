@@ -1,4 +1,4 @@
-module github.com/operator-framework/java-operator
+module github.com/operator-framework/java-operator-plugins
 
 go 1.15
 

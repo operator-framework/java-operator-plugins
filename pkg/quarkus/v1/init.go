@@ -22,7 +22,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/operator-framework/java-operator/pkg/quarkus/v1/scaffolds"
+	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1/scaffolds"
 	"github.com/spf13/pflag"
 	"k8s.io/apimachinery/pkg/util/validation"
 

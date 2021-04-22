@@ -9,7 +9,7 @@ Java Operator is Apache 2.0 licensed and accepts contributions via GitHub pull r
 ## Getting started
 
 - Fork the repository on GitHub
-    https://github.com/operator-framework/java-operator.git
+    https://github.com/operator-framework/java-operator-plugins.git
 
 - If you want to build/run the project, use command
     `TBD`
@@ -71,7 +71,7 @@ Your PR will get reviewed soon from the maintainers of the project. If they sugg
 
 That's it! Thank you for your contribution!
 
-Feel free to suggest changes to this documentation. If you want to discuss something with maintainers, you can ask us on a GitHub [issue](https://github.com/operator-framework/java-operator/issues)
+Feel free to suggest changes to this documentation. If you want to discuss something with maintainers, you can ask us on a GitHub [issue](https://github.com/operator-framework/java-operator-plugins/issues)
 
 ## Documentation
 

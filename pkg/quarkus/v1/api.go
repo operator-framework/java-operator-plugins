@@ -27,7 +27,7 @@ import (
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
 	pluginutil "sigs.k8s.io/kubebuilder/v3/pkg/plugin/util"
 
-	"github.com/operator-framework/java-operator/pkg/quarkus/v1/scaffolds"
+	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1/scaffolds"
 )
 
 type createAPIOptions struct {

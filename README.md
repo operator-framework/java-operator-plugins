@@ -35,13 +35,13 @@ To use kubebuilder-plugin for java operators we need to clone the operator-sdk r
 - Add the kubebuilder plugin to `go.mod`
 
 ```
-github.com/operator-framework/java-operator v0.0.0-20210225171707-e42ea87455e3
+github.com/operator-framework/java-operator-plugins v0.0.0-20210225171707-e42ea87455e3
 ```
 
 - Replace the kubebuilder-plugin path in go-mod pointing to the local dir of your kube-builder repo. Example.
 
 ```
-github.com/operator-framework/java-operator => /Users/sushah/go/src/github.com/sujil02/kubebuilder-plugin
+github.com/operator-framework/java-operator-plugins => /Users/sushah/go/src/github.com/sujil02/kubebuilder-plugin
 ```
 
 ### Updates in Operator-SDK `internal/cmd/operator-sdk/cli/cli.go`
@@ -49,7 +49,7 @@ github.com/operator-framework/java-operator => /Users/sushah/go/src/github.com/s
 - Add the java-operator-sdk import
 
 ```
-javav1 "github.com/operator-framework/java-operator/pkg/quarkus/v1"
+javav1 "github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1"
 ```
 
 - Introduce the java bundle in `GetPluginsCLIAndRoot()` method. 
