@@ -5,7 +5,7 @@ import (
 
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 
-	"github.com/java-operator-sdk/kubebuilder-plugin/pkg/quarkus/v1/scaffolds/internal/templates/util"
+	"github.com/operator-framework/java-operator/pkg/quarkus/v1/scaffolds/internal/templates/util"
 )
 
 var _ machinery.Template = &ModelSpec{}

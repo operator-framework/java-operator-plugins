@@ -1,4 +1,4 @@
-module github.com/java-operator-sdk/kubebuilder-plugin
+module github.com/operator-framework/java-operator
 
 go 1.15
 
