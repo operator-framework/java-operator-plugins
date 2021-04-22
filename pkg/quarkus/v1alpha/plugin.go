@@ -19,6 +19,7 @@ package v1
 import (
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	v3 "sigs.k8s.io/kubebuilder/v3/pkg/config/v3"
+	"sigs.k8s.io/kubebuilder/v3/pkg/model/stage"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
 )
 
@@ -26,7 +27,7 @@ const pluginName = "quarkus.javaoperatorsdk.io"
 
 var (
 	supportedProjectVersions = []config.Version{v3.Version}
-	pluginVersion            = plugin.Version{Number: 1}
+	pluginVersion            = plugin.Version{Number: 1, Stage: stage.Alpha}
 )
 
 var (

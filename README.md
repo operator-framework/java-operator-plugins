@@ -49,7 +49,7 @@ github.com/operator-framework/java-operator-plugins => /Users/sushah/go/src/gith
 - Add the java-operator-sdk import
 
 ```
-quarkusv1 "github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1"
+quarkusv1 "github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha"
 ```
 
 - Introduce the java bundle in `GetPluginsCLIAndRoot()` method. 
