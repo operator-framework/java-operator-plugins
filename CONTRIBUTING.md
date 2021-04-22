@@ -9,6 +9,7 @@ Java Operator is Apache 2.0 licensed and accepts contributions via GitHub pull r
 ## Getting started
 
 - Fork the repository on GitHub
+
     https://github.com/operator-framework/java-operator-plugins.git
 
 - If you want to build/run the project, use command
