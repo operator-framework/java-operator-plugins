@@ -1,0 +1,13 @@
+domain: lucky.com
+layout:
+- quarkus.javaoperatorsdk.io/v1
+projectName: java-op
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  domain: lucky.com
+  group: cache
+  kind: Memcached
+  version: v1
+version: "3"
