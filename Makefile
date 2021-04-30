@@ -1,4 +1,5 @@
 lint:
+	@./hack/check-license.sh
 	@go fmt ./...
 
 test:
