@@ -26,15 +26,13 @@ var _ machinery.Template = &Model{}
 
 type Model struct {
 	machinery.TemplateMixin
+	machinery.ResourceMixin
 
 	// Package is the source files package
 	Package string
 
 	// Name of the operator used for the main file.
 	ClassName string
-
-	Version string
-	Group   string
 }
 
 func (f *Model) SetTemplateDefaults() error {
@@ -57,10 +55,14 @@ const modelTemplate = `package {{ .Package }};
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Kind;
+import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Version;
 
-@Version("{{ .Version }}")
-@Group("{{ .Group }}")
+@Version("{{ .Resource.API.CRDVersion }}")
+@Group("{{ .Resource.QualifiedGroup }}")
+@Kind("{{ .Resource.Kind }}")
+@Plural("{{ .Resource.Plural }}")
 public class {{ .ClassName }} extends CustomResource<{{ .ClassName }}Spec, {{ .ClassName }}Status>
     implements Namespaced {}
 
