@@ -47,5 +47,5 @@ func (f *ApplicationPropertiesFile) SetTemplateDefaults() error {
 // TODO: pass in the name of the operator i.e. replace Memcached
 const ApplicationPropertiesTemplate = `quarkus.container-image.build=true
 #quarkus.container-image.group=
-quarkus.container-image.name={{ .ProjectName }}-service
+quarkus.container-image.name={{ .ProjectName }}-operator
 `
