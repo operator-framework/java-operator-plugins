@@ -85,9 +85,6 @@ help: ## Display this help.
 
 ##@ Build
 
-# run: ansible-operator ## Run against the configured Kubernetes cluster in ~/.kube/config
-# 	$(ANSIBLE_OPERATOR) run
-
 docker-build: ## Build docker image with the manager.
 	mvn package -Dquarkus.container-image.build=true -Dquarkus.container-image.image=${IMG}
 
@@ -96,11 +93,11 @@ docker-push: ## Push docker image with the manager.
 
 ##@ Deployment
 
-install: kustomize ## Install CRDs into the K8s cluster specified in ~/.kube/config.
-	$(KUSTOMIZE) build config/crd | kubectl apply -f -
+install: ## Install CRDs into the K8s cluster specified in ~/.kube/config.
+	@$(foreach file, $(wildcard target/kubernetes/*-v1.yml), kubectl apply -f $(file);)
 
-uninstall: kustomize ## Uninstall CRDs from the K8s cluster specified in ~/.kube/config.
-	$(KUSTOMIZE) build config/crd | kubectl delete -f -
+uninstall: ## Uninstall CRDs from the K8s cluster specified in ~/.kube/config.
+	@$(foreach file, $(wildcard target/kubernetes/*-v1.yml), kubectl delete -f $(file);)
 
 deploy: ## Deploy controller to the K8s cluster specified in ~/.kube/config.
 	kubectl apply -f target/kubernetes/kubernetes.yml
