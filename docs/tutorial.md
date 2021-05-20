@@ -71,6 +71,7 @@ PostScaffold called
 
 After the `create api` command the file structure will be shown as below.
 
+```
 $ tree
 .
 ├── pom.xml
@@ -89,6 +90,7 @@ $ tree
             └── application.properties
 
 6 directories, 8 files
+```
 
 #### Understanding Kubernetes APIs
 
