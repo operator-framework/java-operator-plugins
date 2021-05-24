@@ -75,5 +75,9 @@ func (s *initScaffolder) Scaffold() error {
 		&templates.ApplicationPropertiesFile{
 			ProjectName: s.config.GetProjectName(),
 		},
+		&templates.Makefile{
+			Image:            "",
+			KustomizeVersion: "v3.5.4",
+		},
 	)
 }

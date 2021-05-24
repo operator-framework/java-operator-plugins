@@ -69,8 +69,6 @@ func (s *apiScaffolder) Scaffold() error {
 		&model.Model{
 			Package:   util.ReverseDomain(s.config.GetDomain()),
 			ClassName: util.ToClassname(s.resource.Kind),
-			Version:   s.resource.Version,
-			Group:     s.resource.Group,
 		},
 		&model.ModelSpec{
 			Package:   util.ReverseDomain(s.config.GetDomain()),
