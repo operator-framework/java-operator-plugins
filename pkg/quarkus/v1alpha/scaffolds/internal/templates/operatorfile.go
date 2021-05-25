@@ -39,12 +39,12 @@ func (f *OperatorFile) SetTemplateDefaults() error {
 		return fmt.Errorf("invalid operator name")
 	}
 
+	if strings.HasSuffix(f.OperatorName, "Operator") {
+		f.OperatorName = strings.TrimSuffix(f.OperatorName, "Operator")
+	}
+
 	if f.Path == "" {
-		if strings.HasSuffix(strings.ToLower(f.OperatorName), "operator") {
-			f.Path = util.PrependJavaPath(f.OperatorName+".java", util.AsPath(f.Package))
-		} else {
-			f.Path = util.PrependJavaPath(f.OperatorName+"Operator.java", util.AsPath(f.Package))
-		}
+		f.Path = util.PrependJavaPath(f.OperatorName+"Operator.java", util.AsPath(f.Package))
 	}
 
 	f.TemplateBody = operatorTemplate
