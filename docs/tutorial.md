@@ -59,13 +59,6 @@ Create a new Custom Resource Definition (CRD) API with group `cache` version `v1
 
 ```console
 $ operator-sdk create api --plugins quarkus --group cache --version v1 --kind Memcached
-InjectResource called
-UpdateResource called
-Scaffold called
-NewCreateAPIScaffolder called
-InjectFS called
-api.Scaffold()
-PostScaffold called
 ...
 ```
 

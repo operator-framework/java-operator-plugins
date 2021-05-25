@@ -15,8 +15,6 @@
 package scaffolds
 
 import (
-	"fmt"
-
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
@@ -36,7 +34,6 @@ type apiScaffolder struct {
 
 // NewCreateAPIScaffolder returns a new plugins.Scaffolder for project initialization operations
 func NewCreateAPIScaffolder(cfg config.Config, res resource.Resource) plugins.Scaffolder {
-	fmt.Println("NewCreateAPIScaffolder called")
 	return &apiScaffolder{
 		config:   cfg,
 		resource: res,
@@ -44,12 +41,10 @@ func NewCreateAPIScaffolder(cfg config.Config, res resource.Resource) plugins.Sc
 }
 
 func (s *apiScaffolder) InjectFS(fs machinery.Filesystem) {
-	fmt.Println("InjectFS called")
 	s.fs = fs
 }
 
 func (s *apiScaffolder) Scaffold() error {
-	fmt.Println("api.Scaffold()")
 
 	if err := s.config.UpdateResource(s.resource); err != nil {
 		return err
