@@ -3,7 +3,7 @@ on:
   pull_request: {}
 
 jobs:
-  unit:
+  lint:
     name: lint
     runs-on: ubuntu-18.04
     steps:
