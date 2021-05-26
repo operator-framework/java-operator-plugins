@@ -35,9 +35,19 @@ operator-sdk init --plugins quarkus --domain example.com --project-name memcache
 
 ### MemcachedQuarkusOperator
 
-The main program of the operator `MemcachedQuarkusOperator.java` initializes and runs the operator. The operator uses java-operator-sdk which is similar to the Go lang version of controller-runtime.
+The quarkus plugin will scaffold out several files during the `init` phase. One
+of these files is the operator's main program, `MemcachedQuarkusOperator.java`.
+This file initializes and runs the operator. The operator uses java-operator-sdk,
+which is similar to
+[controller-runtime](https://github.com/kubernetes-sigs/controller-runtime), to
+make operator development easier.
 
-The code below will initialize and define the informers/watches for your operator.
+The important part of the `MemcachedQuarkusOperator.java` is the `run` method
+which will start the operator and initializes the informers and watches for your
+operator.
+
+Here is an example of the `run` method that will typically be scaffolded out by
+this plugin:
 
 ```
   @Override
@@ -51,16 +61,21 @@ The code below will initialize and define the informers/watches for your operato
 
 ## Create a new API and Controller
 
-Create a new Custom Resource Definition (CRD) API with group `cache` version `v1` and Kind `Memcached`. The plugin, still in its alpha state, will output debug messages which are normal.
+An operator isn't much good without an API to work with. Create a new Custom
+Resource Definition (CRD) API with group `cache`, version `v1`, and Kind
+`Memcached`.
 
-`create api` command will  scaffold the `MemcachedController`, `MemcachedSpec`, `MemcachedStatus` and `Memcached`. 
+Use the `create api` command to scaffold the `MemcachedController`,
+`MemcachedSpec`, `MemcachedStatus` and `Memcached`. These files represent the
+API. The plugin may show some debug statements which is normal as it is still in
+the alpha state.
 
 ```console
 $ operator-sdk create api --plugins quarkus --group cache --version v1 --kind Memcached
-...
 ```
 
-After the `create api` command the file structure will be shown as below.
+After running the `create api` command the file structure will change to match the
+one shown as below.
 
 ```
 $ tree
@@ -93,10 +108,13 @@ The `java-operator-plugins` project uses the APIs from [java-operator-sdk](https
 
 #### `MemcachedSpec`
 
-Initially, the scaffolded Spec file will be empty. The operator developer needs to add attributes to this file according to his need. For the Memcached example, we added the size field as shown below example.
+Initially, the scaffolded Spec file will be empty. The operator developer needs
+to add attributes to this file according to their needs. For the `Memcached`
+example, we will add the size field as shown in the example below.
+
+The `MemcachedSpec` class defines the desired state of `Memcached`.
 
 ```
-// MemcachedSpec defines the desired state of Memcached
 public class MemcachedSpec {
 
     // Add Spec information here
@@ -113,17 +131,25 @@ public class MemcachedSpec {
 }
 ```
 
+As you can see, we added the `size` attribute along with corresponding getter
+and setter.
+
 #### `MemcachedStatus`
 
-Similar to the Spec file `MemcachedStatus` file got scaffolded as part of the `create api` command. The user has to modify a Status file. For the Memcached example, we too list of nodes as shown below.
-The nodes field is a list of string values and it contains the name of the Memcached pods.
+Similar to the Spec file above, the `MemcachedStatus` file was scaffolded as
+part of the `create api` command. The user will need to modify a Status file
+in order to add any desired attributes. For this `Memcached` example, we will
+add a list of nodes as shown below.
+
+The nodes field is a list of string values and it contains the name of
+the Memcached pods.  The `MemcachedStatus` defines the observed state
+of `Memcached`.
 
 
 ```
 import java.util.ArrayList;
 import java.util.List;
 
-// MemcachedStatus defines the observed state of Memcached
 public class MemcachedStatus {
 
     // Add Status information here
@@ -143,20 +169,27 @@ public class MemcachedStatus {
 }
 ```
 
-**Note** The Node field is just to illustrate an example of a Status field. In real cases, it would be recommended to use [Conditions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties).
+**Note** The Node field is just to illustrate an example of a Status field. In
+real use cases, it is recommended that you use
+[Conditions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties).
 
 #### `Memcached`
 
-`Memcached` file scaffolded via `create api` command. It extends the properties of `MemcachedSpec` and `MemcachedStatus`.
+Now that we have Spec and Status classes, let's look at the `Memcached` class.
+This file was also scaffolded via `create api` command. Notice it extends both
+`MemcachedSpec` and `MemcachedStatus`.
+
+The `Memcached` is the Schema for the Memcacheds API.
 
 ```
-// Memcached is the Schema for the memcacheds API
 
 @Version("v1alpha1")
 @Group("cache.example.com")
 public class Memcached extends CustomResource<MemcachedSpec, MemcachedStatus>
     implements Namespaced {}
 ```
+
+You have now created the necessary classes for the API.
 
 ### Apply Custom Resource and CRD's using below command
 
