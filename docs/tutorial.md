@@ -1,27 +1,25 @@
----
-title: Quarkus Operator Tutorial
-linkTitle: Tutorial
-weight: 30
-description: An in-depth walkthough of building and running a Quarkus-based operator.
----
+# Java Operator Tutorial
+### An in-depth walkthrough of building and running a Java-based operator.
 
 ## Prerequisites
 
-- Java through the [installation guide](https://java.com/en/download/help/download_options.html).
+- [Operator SDK](https://sdk.operatorframework.io/docs/installation/) v1.8.0 or newer
+- [Java](https://java.com/en/download/help/download_options.html) 11
+- [Maven 3.6.3](https://maven.apache.org/install.html) or newer
 - User authorized with `cluster-admin` permissions.
-- Maven installation [installation guide](https://maven.apache.org/install.html)
 
 ## Overview
 
 We will create a sample project to let you know how it works and this sample will:
 
 - Create a Memcached Deployment if it doesn't exist
-- Ensure that the Deployment size is the same as specified by the Memcached Custom Resource spec
-- Update the Memcached Custom Resource status using the status writer with the names of the Custom Resource's pods
+- Ensure that the Deployment size is the same as specified by the Memcached Custom Resource (CR) spec
+- Update the Memcached CR status using the status writer with the names of the CR's pods
 
 ## Create a new project
 
-Use the CLI to create a new memcached-quarkus-operator project:
+Use the [Operator SDK](https://sdk.operatorframework.io/docs/installation/) CLI to create a
+new memcached-quarkus-operator project:
 
 ```sh
 mkdir memcached-quarkus-operator
