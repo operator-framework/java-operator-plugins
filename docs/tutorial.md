@@ -192,7 +192,7 @@ public class Memcached extends CustomResource<MemcachedSpec, MemcachedStatus>
 
 You have now created the necessary classes for the API.
 
-### Apply Custom Resource and CRD's using below command
+### Creating Custom Resource and CRD
 
 There are a couple of ways to create the CRD. You can either create the file
 manually. Or let the quarkus extensions defined in `pom.xml` use the annotations
@@ -258,8 +258,18 @@ status:
 
 #### Via Quarkus extension
 
-TODO: there is currently an issue with the CRD generation that the schema
-validation is not properly generated.
+**Note** there is currently an issue with the CRD generation that the schema
+validation is not properly generated. Because of this issue, we will not cover
+using this portion during this tutorial. Proceed to the
+[Create sample Memcached Custom Resource](#create-sample-memcached-custom-resource) section
+
+Running `mvn install` will invoke the CRD generator extension which will analyze
+the annotations on the model objects,  `Memcached`, `MemcachedSpec`,
+`MemcachedStatus`, and generate the CRD in `target/kubernetes`.
+
+```
+mvn install
+```
 
 ### Create sample Memcached Custom Resource
 
@@ -274,12 +284,6 @@ spec:
   # Add fields here
   size: 1
 ```
-
-### TODO out of place
-Create the Custom Resource:
-
-`kubectl apply -f memcached-sample.yaml`
-################3
 
 ## Implement the Controller
 
@@ -552,11 +556,28 @@ You can run the operator in a couple of ways. You can run it locally where the
 operator runs on your development machine and talks to the cluster. Or it can
 build images of your operator and run it directly in the cluster.
 
+In this section we will:
+
+* install the CRD
+* create a Custom Resource
+* run your operator
+
+If you want to run the operator in the cluster see the [Running the operator in
+the cluster](#running-the-operator-in-the-cluster) below or if you'd prefer to
+run it locally see the
+[Running locally outside the cluster](#running-locally-outside-the-cluster)
+section instead.
+
 ### Running the operator in the cluster
 
 The following steps will show how to run your operator in the cluster.
 
 1. Build and push your operator's image:
+
+The `java-operator-plugins` project will scaffold out a Makefile to give
+Operator SDK users a familiar interface. Using the `docker-*` targets you can
+conveniently build your and push your operator's image to registry. In our
+example, we are using `quay.io`, but any docker registry should work.
 
 ```
 make docker-build docker-push IMG=quay.io/YOURUSER/memcached-quarkus-operator:0.0.1
@@ -564,9 +585,6 @@ make docker-build docker-push IMG=quay.io/YOURUSER/memcached-quarkus-operator:0.
 
 This will build the docker image
 `quay.io/YOURUSER/memcached-quarkus-operator:0.0.1` and push it to the registry.
-
-**Note** You can use any docker registry you want i.e. `docker.io`, `quay.io`,
-etc.
 
 You can verify it is in your docker registry:
 
@@ -577,15 +595,20 @@ quay.io/YOURUSER/memcached-quarkus-operator                   0.0.1             
 
 2. Install the CRD
 
-Next we will install the CRD into the `default` namespace
+Next we will install the CRD into the `default` namespace. Using the `crd.yaml`
+you created in the [Manually created crd.yaml](#manually-create-crdyaml)
+section, apply it to the cluster.
 
+<!--
+TODO: Uncomment this when the crd generator works properly.
 ```
 make install
 customresourcedefinition.apiextensions.k8s.io/memcacheds.cache.example.com created
 ```
+-->
 
 ```
-$ kubectl apply -f /tmp/crd.yaml
+$ kubectl apply -f crd.yaml
 customresourcedefinition.apiextensions.k8s.io/memcacheds.cache.example.com created
 ```
 
@@ -617,70 +640,67 @@ Do not apply this yet. We will do that in a later step.
 
 4. Deploy the operator
 
+Let's deploy your operator to the cluster. The `Makefile` has a convenience
+target that can do this for you:
+
 ```
 make deploy
 ```
 
-5.  Grant `cluster-admin` to service account
+5. Grant `cluster-admin` to service account
 
-Let's grant the `memcached-quarkus-operator-operator` service account
-the right privileges.
+Once you've deployed the operator, you will need to grant the
+`memcached-quarkus-operator-operator` service account the right privileges.
 
 ```
 kubectl apply -f rbac.yaml
 ```
 
+6. Verify the operator is running
+
+Ensure the `memcached-quarkus-operator-operator-XXX` pod is in a `Running`
+status.
+
 ```
 $ kubectl get all -n default
 NAME                                                       READY     STATUS    RESTARTS   AGE
 pod/memcached-quarkus-operator-operator-7db86ccf58-k4mlm   0/1       Running   0          18s
-
-NAME                                          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
-service/kubernetes                            ClusterIP   10.96.0.1       <none>        443/TCP    6m18s
-service/memcached-quarkus-operator-operator   ClusterIP   10.96.244.231   <none>        8080/TCP   18s
-
-NAME                                                  READY     UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/memcached-quarkus-operator-operator   0/1       1            0           18s
-
-NAME                                                             DESIRED   CURRENT   READY     AGE
-replicaset.apps/memcached-quarkus-operator-operator-7db86ccf58   1         1         0         18s
+...
 ```
 
-6. Apply the memcached-sample to see the operator create the memcached-sample
-   pod.
+7. Apply the memcached-sample
+
+Apply the memcached-sample to see the operator create the memcached-sample pod.
 
 ```
 $ k apply -f memcached-sample.yaml
 memcached.cache.example.com/memcached-sample created
 ```
 
+8. Verify the sample
+
+Now check the cluster to see if the pod has started. Keep watching until the
+`memcached-sample-XXX` pod reaches a `Running` status.
+
 ```
 $ k get all
 NAME                                                       READY   STATUS    RESTARTS   AGE
 pod/memcached-quarkus-operator-operator-7b766f4896-kxnzt   1/1     Running   1          79s
 pod/memcached-sample-6c765df685-mfqnz                      1/1     Running   0          18s
-
-NAME                                          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
-service/kubernetes                            ClusterIP   10.96.0.1       <none>        443/TCP    8h
-service/memcached-quarkus-operator-operator   ClusterIP   10.96.236.214   <none>        8080/TCP   79s
-
-NAME                                                  READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/memcached-quarkus-operator-operator   1/1     1            1           80s
-deployment.apps/memcached-sample                      1/1     1            1           19s
-
-NAME                                                             DESIRED   CURRENT   READY   AGE
-replicaset.apps/memcached-quarkus-operator-operator-7b766f4896   1         1         1       80s
-replicaset.apps/memcached-sample-6c765df685                      1         1         1       19s
+...
 ```
-
 
 ### Running locally outside the cluster
 
-The following steps will show how to run your operator locally.
+For development purposes, you may want to run your operator locally for faster
+iteration. In the following steps, we will show how to run  your operator
+locally.
 
-Compile your operator with the below command
+1. Compile your operator with the below command
 
-`mvn clean install`
+```
+mvn clean install
+```
 
 You should see a nice `BUILD SUCCESS` method like the one below:
 
@@ -691,27 +711,88 @@ You should see a nice `BUILD SUCCESS` method like the one below:
 [INFO] Total time:  11.193 s
 [INFO] Finished at: 2021-05-26T12:16:54-04:00
 [INFO] ------------------------------------------------------------------------
+```
+
+2. Install the CRD
+
+Next we will install the CRD into the `default` namespace. Using the `crd.yaml`
+you created in the [Manually created crd.yaml](#manually-create-crdyaml)
+section, apply it to the cluster.
 
 ```
+$ kubectl apply -f crd.yaml
+customresourcedefinition.apiextensions.k8s.io/memcacheds.cache.example.com created
+```
+
+3.  Create and apply rbac.yaml file
+
+The RBAC generated in the `kubernetes.yml` only has [view
+permissions](https://quarkus.io/guides/deploying-to-kubernetes#using-the-kubernetes-client)
+which is not enough to run the operator. For this example, we will simply grant
+cluster-admin to the `memcached-quarkus-operator-operator` service account.
+
+Create a file called `rbac.yaml` with the following contents:
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: memcached-operator-admin
+subjects:
+- kind: ServiceAccount
+  name: memcached-quarkus-operator-operator
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: ""
+```
+
+Let's apply the rbac role to the cluster:
+
+```
+kubectl apply -f rbac.yaml
+```
+
+4. Run the operator
 
 After running this command, notice there is now a `target` directory. That
 directory may be a bit overwhelming, but the key thing to know for running locally
 is the `target/memcached-quarkus-operator-0.0.1.jar` file created for your
 operator and the `quarkus-run.jar` in `target/quarkus-app` directory.
 
-Now, run the `jar` file using the below command.
+Now, run the `jar` file using the below command. This command will run your
+opeator locally.
 
-`java -jar target/quarkus-app/quarkus-run.jar`
+```
+java -jar target/quarkus-app/quarkus-run.jar
+```
 
-This command will run your operator locally. You can check the cluster pods and
-deployment with the following commands.
+**Note** the above will run the operator and remain running until you kill it.
+You will need another terminal to complete the rest of these commands.
 
-`kubectl get deployment`
+5. Apply the memcached-sample
 
-`kubectl get pods`
+Apply the memcached-sample to see the operator create the memcached-sample pod.
 
-Delete one of the Pod forcefully then Memcached operator will create a new one automatically.
+```
+$ k apply -f memcached-sample.yaml
+memcached.cache.example.com/memcached-sample created
+```
 
-`kubectl delete pod pod-name`
+6. Verify the sample
 
-In the end, change the size from the memcached-sample.yaml file and apply it to the cluster. After these steps, an operator will make sure that the cluster has an updated number of pods in it.
+Now check the cluster to see if the pod has started. Keep watching until the
+`memcached-sample-XXX` pod reaches a `Running` status.
+
+```
+$ k get all
+NAME                                                       READY   STATUS    RESTARTS   AGE
+pod/memcached-sample-6c765df685-mfqnz                      1/1     Running   0          18s
+...
+```
+
+7. Trigger a reconcile
+
+If you modify the size field of the `memcached-sample.yaml` and re-apply it. The
+operator will trigger a reconcile and adjust the sample pods to the size given.
