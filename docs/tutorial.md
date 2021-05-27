@@ -7,6 +7,7 @@
 - [Java](https://java.com/en/download/help/download_options.html) 11
 - [Maven 3.6.3](https://maven.apache.org/install.html) or newer
 - User authorized with `cluster-admin` permissions.
+- [GNU Make](https://www.gnu.org/software/make/)
 
 ## Overview
 
@@ -183,7 +184,7 @@ The `Memcached` is the Schema for the Memcacheds API.
 
 ```
 
-@Version("v1alpha1")
+@Version("v1")
 @Group("cache.example.com")
 public class Memcached extends CustomResource<MemcachedSpec, MemcachedStatus>
     implements Namespaced {}
@@ -194,7 +195,7 @@ You have now created the necessary classes for the API.
 ### Apply Custom Resource and CRD's using below command
 
 There are a couple of ways to create the CRD. You can either create the file
-manually. OR let the quarkus extensions defined in pom.xml use the annotations
+manually. Or let the quarkus extensions defined in `pom.xml` use the annotations
 on your Spec/Status classes to create the crd files for you.
 
 #### Manually create `crd.yaml`
@@ -222,6 +223,26 @@ spec:
   - name: v1
     schema:
       openAPIV3Schema:
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              size:
+                format: int32
+                type: integer
+            type: object
+          status:
+            properties:
+              nodes:
+                items:
+                  type: string
+                type: array
+            type: object
         type: object
     served: true
     storage: true
@@ -235,11 +256,10 @@ status:
   storedVersions: []
 ```
 
-### TODO: Creating the CRD seems out of place
-Create the CRD:
+#### Via Quarkus extension
 
-`kubectl apply -f crd.yaml`
-#########
+TODO: there is currently an issue with the CRD generation that the schema
+validation is not properly generated.
 
 ### Create sample Memcached Custom Resource
 
@@ -275,7 +295,7 @@ Initially the `MemcachedController.java` will contain the empty stubs for
 `createOrUpdateResource` and `deleteResource`. In this section we will fill in
 the controller logic in these methods. We will also add a
 `createMemcachedDeployment` method that will create the Deployment for our
-operator.
+operator and a `labelsForMemcached` method that returns the labels.
 
 The `createOrUpdateResource` and `deleteResource` get called whenever some
 update/create/delete event occurs in the cluster. This will allow us to react to
@@ -312,12 +332,6 @@ get deployment code we added above, add the following:
 In the above code, we are checking to see if the deployment exists, if not we
 will create it by calling the yet to be defined `createMemcachedDeployment`
 method.
-
-
-##############################
-Below code will verify that Deployment within the cluster got created or not. If deployment is null then it will create deployment. `createMemcachedDeployment(resource)` creates the Deployment and then it will be applied by using `client.apps().deployments().create(newDeployment);` code. `createMemcachedDeployment(resource)` method explained in the next part.
-
-##############################
 
 Once we create the deployment, we need to decide whether we have to reconcile it or not.
 If there is no need of reconciliation then return `UpdateControl.noUpdate()`
@@ -439,7 +453,27 @@ Let's recap what we did.
 
 What's left? If you recall, in the if the deployment is `null`, we call
 `createMemcachedDeployment(resource)`. This method still needs to get created.
-In the next section, we will walk you through creating this helper method.
+As well as the `labelsForMemcached` utility method.
+
+Let's create the utility method first.
+
+### labelsForMemcached
+
+A simple utility method to return a map of the labels we want to attach to some
+of the resources. Below the `deleteResource` method add the following
+helper:
+
+```
+    private Map<String, String> labelsForMemcached(Memcached m) {
+        Map<String, String> labels = new HashMap<>();
+        labels.put("app", "memcached");
+        labels.put("memcached_cr", m.getMetadata().getName());
+        return labels;
+    }
+```
+
+In the next section, we will walk you through creating the
+`createMemcachedDeployment` utility method.
 
 ### createMemcachedDeployment
 
@@ -453,8 +487,8 @@ Let's create the `createMemcachedDeployment` method. The following code will use
 the [`fabric8`](https://fabric8.io/) `DeploymentBuilder` class. Notice the
 Deployment specifies the `memcached` image for the pod.
 
-Below your `deleteResource(Memcached resource, Context<Memcached> context) {`
-block in the `MemcachedController.java`, add the following method.
+Below your `labelsForMemcached(Memcached m)` block in the
+`MemcachedController.java`, add the following method.
 
 ```
     private Deployment createMemcachedDeployment(Memcached m) {
@@ -465,7 +499,7 @@ block in the `MemcachedController.java`, add the following method.
                     .withNamespace(m.getMetadata().getNamespace())
                     .withOwnerReferences(
                         new OwnerReferenceBuilder()
-                            .withApiVersion("v1alpha1")
+                            .withApiVersion("v1")
                             .withKind("Memcached")
                             .withName(m.getMetadata().getName())
                             .withUid(m.getMetadata().getUid())
@@ -500,15 +534,147 @@ block in the `MemcachedController.java`, add the following method.
     }
 ```
 
+Now we have a `createOrUpdateResource` method. It calls
+`createMemcachedDeployment` which we have implemented above. In the next section
+we will discuss the deletion of the resource.
+
 ### deleteResource
 
-The `deleteResource` method is an implemented method. The deletion part will be taken care of by the Java Operator SDK  library, that's why it is empty.
+One of the benefits of the `java-operator-sdk` library is that it handles the
+deletion portion for you. The scaffolded `deleteResource` is already implmented
+for you.
 
-We have not implemented the `MemcachedController.java`.
+We have now implemented the `MemcachedController.java`.
 
-## Run the Operator Locally
+## Run the Operator
 
-### Run locally outside the cluster
+You can run the operator in a couple of ways. You can run it locally where the
+operator runs on your development machine and talks to the cluster. Or it can
+build images of your operator and run it directly in the cluster.
+
+### Running the operator in the cluster
+
+The following steps will show how to run your operator in the cluster.
+
+1. Build and push your operator's image:
+
+```
+make docker-build docker-push IMG=quay.io/YOURUSER/memcached-quarkus-operator:0.0.1
+```
+
+This will build the docker image
+`quay.io/YOURUSER/memcached-quarkus-operator:0.0.1` and push it to the registry.
+
+**Note** You can use any docker registry you want i.e. `docker.io`, `quay.io`,
+etc.
+
+You can verify it is in your docker registry:
+
+```
+$ docker images | grep memcached
+quay.io/YOURUSER/memcached-quarkus-operator                   0.0.1               c84d2616bc1b        29 seconds ago       236MB
+```
+
+2. Install the CRD
+
+Next we will install the CRD into the `default` namespace
+
+```
+make install
+customresourcedefinition.apiextensions.k8s.io/memcacheds.cache.example.com created
+```
+
+```
+$ kubectl apply -f /tmp/crd.yaml
+customresourcedefinition.apiextensions.k8s.io/memcacheds.cache.example.com created
+```
+
+3.  Create rbac.yaml file
+
+The RBAC generated in the `kubernetes.yml` only has [view
+permissions](https://quarkus.io/guides/deploying-to-kubernetes#using-the-kubernetes-client)
+which is not enough to run the operator. For this example, we will simply grant
+cluster-admin to the `memcached-quarkus-operator-operator` service account.
+
+Create a file called `rbac.yaml` with the following contents:
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: memcached-operator-admin
+subjects:
+- kind: ServiceAccount
+  name: memcached-quarkus-operator-operator
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: ""
+```
+
+Do not apply this yet. We will do that in a later step.
+
+4. Deploy the operator
+
+```
+make deploy
+```
+
+5.  Grant `cluster-admin` to service account
+
+Let's grant the `memcached-quarkus-operator-operator` service account
+the right privileges.
+
+```
+kubectl apply -f rbac.yaml
+```
+
+```
+$ kubectl get all -n default
+NAME                                                       READY     STATUS    RESTARTS   AGE
+pod/memcached-quarkus-operator-operator-7db86ccf58-k4mlm   0/1       Running   0          18s
+
+NAME                                          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/kubernetes                            ClusterIP   10.96.0.1       <none>        443/TCP    6m18s
+service/memcached-quarkus-operator-operator   ClusterIP   10.96.244.231   <none>        8080/TCP   18s
+
+NAME                                                  READY     UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/memcached-quarkus-operator-operator   0/1       1            0           18s
+
+NAME                                                             DESIRED   CURRENT   READY     AGE
+replicaset.apps/memcached-quarkus-operator-operator-7db86ccf58   1         1         0         18s
+```
+
+6. Apply the memcached-sample to see the operator create the memcached-sample
+   pod.
+
+```
+$ k apply -f memcached-sample.yaml
+memcached.cache.example.com/memcached-sample created
+```
+
+```
+$ k get all
+NAME                                                       READY   STATUS    RESTARTS   AGE
+pod/memcached-quarkus-operator-operator-7b766f4896-kxnzt   1/1     Running   1          79s
+pod/memcached-sample-6c765df685-mfqnz                      1/1     Running   0          18s
+
+NAME                                          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/kubernetes                            ClusterIP   10.96.0.1       <none>        443/TCP    8h
+service/memcached-quarkus-operator-operator   ClusterIP   10.96.236.214   <none>        8080/TCP   79s
+
+NAME                                                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/memcached-quarkus-operator-operator   1/1     1            1           80s
+deployment.apps/memcached-sample                      1/1     1            1           19s
+
+NAME                                                             DESIRED   CURRENT   READY   AGE
+replicaset.apps/memcached-quarkus-operator-operator-7b766f4896   1         1         1       80s
+replicaset.apps/memcached-sample-6c765df685                      1         1         1       19s
+```
+
+
+### Running locally outside the cluster
 
 The following steps will show how to run your operator locally.
 
@@ -516,17 +682,35 @@ Compile your operator with the below command
 
 `mvn clean install`
 
-It will create a `.jar` file for your operator in `target/quarkus-app`.  Now, run the `jar` file using the below command.
+You should see a nice `BUILD SUCCESS` method like the one below:
 
-`java -jar quarkus-run.jar`
+```
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  11.193 s
+[INFO] Finished at: 2021-05-26T12:16:54-04:00
+[INFO] ------------------------------------------------------------------------
 
-This command will run your operator locally. You can check cluster pods and deployment with the below commands.
+```
+
+After running this command, notice there is now a `target` directory. That
+directory may be a bit overwhelming, but the key thing to know for running locally
+is the `target/memcached-quarkus-operator-0.0.1.jar` file created for your
+operator and the `quarkus-run.jar` in `target/quarkus-app` directory.
+
+Now, run the `jar` file using the below command.
+
+`java -jar target/quarkus-app/quarkus-run.jar`
+
+This command will run your operator locally. You can check the cluster pods and
+deployment with the following commands.
 
 `kubectl get deployment`
 
 `kubectl get pods`
 
-Delete One of the Pod forcefully then Memcached operator will create new automatically.
+Delete one of the Pod forcefully then Memcached operator will create a new one automatically.
 
 `kubectl delete pod pod-name`
 
