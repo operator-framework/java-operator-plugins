@@ -675,7 +675,7 @@ pod/memcached-quarkus-operator-operator-7db86ccf58-k4mlm   0/1       Running   0
 Apply the memcached-sample to see the operator create the memcached-sample pod.
 
 ```
-$ k apply -f memcached-sample.yaml
+$ kubectl apply -f memcached-sample.yaml
 memcached.cache.example.com/memcached-sample created
 ```
 
@@ -685,7 +685,7 @@ Now check the cluster to see if the pod has started. Keep watching until the
 `memcached-sample-XXX` pod reaches a `Running` status.
 
 ```
-$ k get all
+$ kubectl get all
 NAME                                                       READY   STATUS    RESTARTS   AGE
 pod/memcached-quarkus-operator-operator-7b766f4896-kxnzt   1/1     Running   1          79s
 pod/memcached-sample-6c765df685-mfqnz                      1/1     Running   0          18s
@@ -778,7 +778,7 @@ You will need another terminal to complete the rest of these commands.
 Apply the memcached-sample to see the operator create the memcached-sample pod.
 
 ```
-$ k apply -f memcached-sample.yaml
+$ kubectl apply -f memcached-sample.yaml
 memcached.cache.example.com/memcached-sample created
 ```
 
@@ -788,7 +788,7 @@ Now check the cluster to see if the pod has started. Keep watching until the
 `memcached-sample-XXX` pod reaches a `Running` status.
 
 ```
-$ k get all
+$ kubectl get all
 NAME                                                       READY   STATUS    RESTARTS   AGE
 pod/memcached-sample-6c765df685-mfqnz                      1/1     Running   0          18s
 ...
