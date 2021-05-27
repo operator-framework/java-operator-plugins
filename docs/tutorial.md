@@ -692,6 +692,11 @@ pod/memcached-sample-6c765df685-mfqnz                      1/1     Running   0  
 ...
 ```
 
+9. Trigger a reconcile
+
+If you modify the size field of the `memcached-sample.yaml` and re-apply it. The
+operator will trigger a reconcile and adjust the sample pods to the size given.
+
 ### Running locally outside the cluster
 
 For development purposes, you may want to run your operator locally for faster
