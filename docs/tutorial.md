@@ -186,6 +186,8 @@ The `Memcached` is the Schema for the Memcacheds API.
 
 @Version("v1")
 @Group("cache.example.com")
+@Kind("Memcached")
+@Plural("memcacheds")
 public class Memcached extends CustomResource<MemcachedSpec, MemcachedStatus>
     implements Namespaced {}
 ```
