@@ -54,14 +54,13 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <maven.compiler.source>11</maven.compiler.source>
-      <maven.compiler.target>11</maven.compiler.target>
-      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-      <fabric8-client.version>5.3.0</fabric8-client.version>
-      <quarkus-sdk.version>1.8.2</quarkus-sdk.version>
-      <java-sdk.version>1.8.2</java-sdk.version>
-      <quarkus.version>1.12.2.Final</quarkus.version>
-      <quarkus.native.builder-image>quay.io/quarkus/ubi-quarkus-native-image:19.3.1-java11</quarkus.native.builder-image>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <fabric8-client.version>5.4.1</fabric8-client.version>
+    <quarkus-sdk.version>1.9.3</quarkus-sdk.version>
+    <quarkus.version>1.13.7.Final</quarkus.version>
+    <quarkus.native.builder-image>quay.io/quarkus/ubi-quarkus-native-image:19.3.1-java11</quarkus.native.builder-image>
   </properties>
 
   <dependencyManagement>
