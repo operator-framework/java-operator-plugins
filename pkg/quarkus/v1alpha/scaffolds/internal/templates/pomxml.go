@@ -88,25 +88,6 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
       <artifactId>quarkus-operator-sdk</artifactId>
       <version>${quarkus-sdk.version}</version>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>crd-generator-apt</artifactId>
-      <version>${fabric8-client.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.javaoperatorsdk</groupId>
-      <artifactId>operator-framework</artifactId>
-      <version>${java-sdk.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-container-image-jib</artifactId>
-      <version>${quarkus.version}</version>
-    </dependency>
   </dependencies>
 
   <build>
