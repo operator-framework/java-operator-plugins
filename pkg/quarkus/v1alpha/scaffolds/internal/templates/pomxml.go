@@ -48,7 +48,7 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
   <groupId>{{ .Package }}</groupId>
   <artifactId>{{ .ProjectName }}</artifactId>
   <name>{{ .ProjectName }}</name>
-  <version>{{ .OperatorVersion }}</version>
+  <version>{{ .OperatorVersion }}-SNAPSHOT</version>
   <packaging>jar</packaging>
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
