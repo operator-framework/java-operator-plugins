@@ -60,7 +60,6 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
     <fabric8-client.version>5.4.1</fabric8-client.version>
     <quarkus-sdk.version>1.9.4</quarkus-sdk.version>
     <quarkus.version>1.13.7.Final</quarkus.version>
-    <quarkus.native.builder-image>quay.io/quarkus/ubi-quarkus-native-image:19.3.1-java11</quarkus.native.builder-image>
   </properties>
 
   <dependencyManagement>
