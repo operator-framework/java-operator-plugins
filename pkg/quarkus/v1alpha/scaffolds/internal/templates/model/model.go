@@ -59,7 +59,7 @@ import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Version;
 
-@Version("{{ .Resource.API.CRDVersion }}")
+@Version("{{ .Resource.Version }}")
 @Group("{{ .Resource.QualifiedGroup }}")
 @Kind("{{ .Resource.Kind }}")
 @Plural("{{ .Resource.Plural }}")
