@@ -51,19 +51,10 @@ func (f *Controller) SetTemplateDefaults() error {
 // TODO: pass in the name of the operator i.e. replace Memcached
 const controllerTemplate = `package {{ .Package }};
 
-import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.api.model.apps.Deployment;
-import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
-import io.fabric8.kubernetes.api.model.apps.DeploymentSpecBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.Context;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import org.apache.commons.collections.CollectionUtils;
 
 @Controller
 public class {{ .ClassName }}Controller implements ResourceController<{{ .ClassName }}> {
@@ -87,14 +78,6 @@ public class {{ .ClassName }}Controller implements ResourceController<{{ .ClassN
         // TODO: fill in logic
 
         return UpdateControl.noUpdate();
-    }
-
-    @Override
-    public DeleteControl deleteResource({{ .ClassName }} resource, Context<{{ .ClassName }}> context) {
-        // nothing to do here...
-        // framework takes care of deleting the resource object
-        // k8s takes care of deleting deployment and pods because of ownerreference set
-        return DeleteControl.DEFAULT_DELETE;
     }
 }
 

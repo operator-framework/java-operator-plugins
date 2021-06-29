@@ -30,6 +30,7 @@ import (
 
 type createAPIOptions struct {
 	CRDVersion string
+	Namespaced bool
 }
 
 type createAPISubcommand struct {
@@ -42,7 +43,7 @@ func (opts createAPIOptions) UpdateResource(res *resource.Resource) {
 
 	res.API = &resource.API{
 		CRDVersion: opts.CRDVersion,
-		Namespaced: true,
+		Namespaced: opts.Namespaced,
 	}
 
 	// Ensure that Path is empty and Controller false as this is not a Go project
@@ -57,6 +58,7 @@ var (
 func (p *createAPISubcommand) BindFlags(fs *pflag.FlagSet) {
 	fs.SortFlags = false
 	fs.StringVar(&p.options.CRDVersion, "crd-version", "v1", "crd version to generate")
+	fs.BoolVar(&p.options.Namespaced, "namespaced", true, "resource is namespaced")
 }
 
 func (p *createAPISubcommand) InjectConfig(c config.Config) error {
