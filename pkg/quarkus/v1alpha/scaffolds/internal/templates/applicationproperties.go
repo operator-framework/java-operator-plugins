@@ -48,4 +48,6 @@ func (f *ApplicationPropertiesFile) SetTemplateDefaults() error {
 const ApplicationPropertiesTemplate = `quarkus.container-image.build=true
 #quarkus.container-image.group=
 quarkus.container-image.name={{ .ProjectName }}-operator
+# set to true to automatically apply CRDs to the cluster when they get regenerated
+quarkus.operator-sdk.crd.apply=false
 `
