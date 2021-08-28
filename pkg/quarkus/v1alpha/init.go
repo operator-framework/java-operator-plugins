@@ -112,7 +112,8 @@ func (p *initSubcommand) Validate() error {
 }
 
 func (p *initSubcommand) PostScaffold() error {
-	// TODO: add anything you want to do AFTER the scaffolding has happened.
+	// print follow on instructions to better guide the user
+	fmt.Printf("Next: define a resource with:\n$ %s create api\n", p.commandName)
 	return nil
 }
 
