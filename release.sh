@@ -66,7 +66,7 @@ git verify-tag --verbose $VER
 
 # remind the releaser to do the next steps
 echo ""
-echo "Done forget to:"
+echo "Don't forget to:"
 echo ""
 echo "git push upstream <release-branch>"
 echo "git push upstream $VER"
