@@ -38,7 +38,7 @@ NUMRE="0|[1-9][0-9]*"
 PRERE="\-(alpha|beta|rc)\.[1-9][0-9]*"
 
 # check that we are in a release branch
-if ! [[ "$CUR_BRANCH" =~ ^v($NUMRE)\.($NUMRE)\.($NUMRE)($PRERE)?$ ]]; then
+if ! [[ "$CUR_BRANCH" =~ ^v($NUMRE)\.($NUMRE)\.x$ ]]; then
 	echo "branch: \"$CUR_BRANCH\" is not a release branch, please create a release branch in the form of vX.Y.x"
 	exit 1
 fi
