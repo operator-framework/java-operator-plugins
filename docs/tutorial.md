@@ -34,31 +34,6 @@ operator-sdk init --plugins quarkus --domain example.com --project-name memcache
 
 `operator-sdk init` generates `pom.xml` file. This file contains all the dependencies required to run the operator.
 
-### MemcachedQuarkusOperator
-
-The quarkus plugin will scaffold out several files during the `init` phase. One
-of these files is the operator's main program, `MemcachedQuarkusOperator.java`.
-This file initializes and runs the operator. The operator uses java-operator-sdk,
-which is similar to
-[controller-runtime](https://github.com/kubernetes-sigs/controller-runtime), to
-make operator development easier.
-
-The important part of the `MemcachedQuarkusOperator.java` is the `run` method
-which will start the operator and initializes the informers and watches for your
-operator.
-
-Here is an example of the `run` method that will typically be scaffolded out by
-this plugin:
-
-```
-  @Override
-  public int run(String... args) throws Exception {
-    operator.start();
-
-    Quarkus.waitForExit();
-    return 0;
-  }
-```
 
 ## Create a new API and Controller
 
@@ -81,16 +56,16 @@ one shown as below.
 ```
 $ tree
 .
-├── pom.xml
+├── Makefile
 ├── PROJECT
+├── pom.xml
 └── src
     └── main
         ├── java
         │   └── com
         │       └── example
-        │           ├── MemcachedController.java
         │           ├── Memcached.java
-        │           ├── MemcachedQuarkusOperator.java
+        │           ├── MemcachedController.java
         │           ├── MemcachedSpec.java
         │           └── MemcachedStatus.java
         └── resources
