@@ -273,12 +273,12 @@ This controller implements the `ResourceController` interface from the
 `java-operator-sdk`. This interface has some important and useful methods.
 
 Initially the `MemcachedController.java` will contain the empty stubs for
-`createOrUpdateResource` and `deleteResource`. In this section we will fill in
+`createOrUpdateResource`. In this section we will fill in
 the controller logic in these methods. We will also add a
 `createMemcachedDeployment` method that will create the Deployment for our
 operator and a `labelsForMemcached` method that returns the labels.
 
-The `createOrUpdateResource` and `deleteResource` get called whenever some
+The `createOrUpdateResource` get called whenever some
 update/create/delete event occurs in the cluster. This will allow us to react to
 changes to the Deployment.
 
@@ -518,12 +518,6 @@ Below your `labelsForMemcached(Memcached m)` block in the
 Now we have a `createOrUpdateResource` method. It calls
 `createMemcachedDeployment` which we have implemented above. In the next section
 we will discuss the deletion of the resource.
-
-### deleteResource
-
-One of the benefits of the `java-operator-sdk` library is that it handles the
-deletion portion for you. The scaffolded `deleteResource` is already implmented
-for you.
 
 We have now implemented the `MemcachedController.java`.
 

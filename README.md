@@ -90,15 +90,15 @@ operator-sdk init --plugins quarkus --domain xyz.com --project-name java-op
 Once the operator is scaffolded check for the following files
 
 ```
+.
+├── Makefile
 ├── PROJECT
 ├── pom.xml
 └── src
     └── main
         ├── java
-        │   └── com
-        │       └── xyz
-        │           └── JavaOpOperator.java
         └── resources
             └── application.properties
 
+4 directories, 4 files
 ```
