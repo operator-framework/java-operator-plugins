@@ -30,10 +30,6 @@ cd memcached-quarkus-operator
 operator-sdk init --plugins quarkus --domain example.com --project-name memcached-quarkus-operator
 ```
 
-**Note**
-
-Please do not commit this code to github immediately after `init` command. This command only generates empty directory structure and Github does not accept empty directory.
-
 #### A note on dependency management
 
 `operator-sdk init` generates `pom.xml` file. This file contains all the dependencies required to run the operator.
