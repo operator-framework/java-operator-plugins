@@ -72,7 +72,7 @@ API. The plugin may show some debug statements which is normal as it is still in
 the alpha state.
 
 ```console
-$ operator-sdk create api --plugins quarkus --group cache --version v1 --kind Memcached
+$ operator-sdk create api --plugins quarkus --group cache --version v1 --kind Memcached && rm -rf src/main/java/.placeholder
 ```
 
 After running the `create api` command the file structure will change to match the
