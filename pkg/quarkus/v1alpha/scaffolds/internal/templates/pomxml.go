@@ -86,6 +86,11 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
       <artifactId>quarkus-operator-sdk</artifactId>
       <version>${quarkus-sdk.version}</version>
     </dependency>
+    <dependency>
+      <groupId>io.quarkiverse.operatorsdk</groupId>
+      <artifactId>quarkus-operator-sdk-csv-generator</artifactId>
+      <version>${quarkus-sdk.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
