@@ -214,8 +214,16 @@ spec:
       openAPIV3Schema:
         properties:
           spec:
+            properties:
+              size:
+                type: integer
             type: object
           status:
+            properties:
+              nodes:
+                items:
+                  type: string
+                type: array
             type: object
         type: object
     served: true
