@@ -508,7 +508,7 @@ We have now implemented the `MemcachedController.java`.
 
 ## Include Dependencies
 
-Please import below dependencies in `MemcachedController.java` file
+Please add below dependencies in `MemcachedController.java` file.
 
 ```
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
