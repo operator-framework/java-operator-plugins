@@ -25,53 +25,6 @@ Operator SDK is under Apache 2.0 license. See the [LICENSE][license_file] file f
 [of-blog]: https://coreos.com/blog/introducing-operator-framework
 [operator-link]: https://coreos.com/operators/
 
-## Enable java-operator-plugins for operator-sdk
-
-
-To use java-operator-plugins for java operators we need to clone the operator-sdk repo. 
-
-### Updates in Operator-SDK go.mod
-
-- Add the kubebuilder plugin to `go.mod`
-
-```
-github.com/operator-framework/java-operator-plugins v0.0.0-20210225171707-e42ea87455e3
-```
-
-- Replace the java-operator-plugins path in go-mod pointing to the local dir of your kube-builder repo. Example.
-
-```
-github.com/operator-framework/java-operator-plugins => /Users/sushah/go/src/github.com/sujil02/java-operator-plugins
-```
-
-### Updates in Operator-SDK `internal/cmd/operator-sdk/cli/cli.go`
-
-- Add the java-operator-sdk import
-
-```
-quarkusv1 "github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha"
-```
-
-- Introduce the java bundle in `GetPluginsCLIAndRoot()` method. 
-```
-quarkusBundle, _ := plugin.NewBundle("quarkus"+plugins.DefaultNameQualifier, plugin.Version{Number: 1},
-		&quarkusv1.Plugin{},
-	)
-```
-
-- Add the created quarkusBundle to the `cli.New`
-
-```
-    cli.WithPlugins(
-			ansibleBundle,
-			gov2Bundle,
-			gov3Bundle,
-			helmBundle,
-			quarkusBundle,
-		),
-```
-
-
 ### Build and Install the Operator-SDK
 ```
 go mod tidy
