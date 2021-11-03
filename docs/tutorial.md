@@ -427,7 +427,7 @@ Let's create the utility method first.
 ### labelsForMemcached
 
 A simple utility method to return a map of the labels we want to attach to some
-of the resources. Below the `deleteResource` method add the following
+of the resources. Below the `createOrUpdateResource` method add the following
 helper:
 
 ```
@@ -502,8 +502,7 @@ Below your `labelsForMemcached(Memcached m)` block in the
 ```
 
 Now we have a `createOrUpdateResource` method. It calls
-`createMemcachedDeployment` which we have implemented above. In the next section
-we will discuss the deletion of the resource.
+`createMemcachedDeployment` which we have implemented above.
 
 We have now implemented the `MemcachedController.java`.
 
