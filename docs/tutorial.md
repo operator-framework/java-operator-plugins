@@ -584,9 +584,7 @@ quay.io/YOURUSER/memcached-quarkus-operator                   0.0.1             
 
 2. Install the CRD
 
-Next we will install the CRD into the `default` namespace. Using the `crd.yaml`
-you created in the [Manually created crd.yaml](#manually-create-crdyaml)
-section, apply it to the cluster.
+Next we will install the CRD into the `default` namespace. Using the `target/kubernetes/memcacheds.cache.example.com-v1.yml` , apply it to the cluster.
 
 <!--
 TODO: Uncomment this when the crd generator works properly.
@@ -709,9 +707,7 @@ You should see a nice `BUILD SUCCESS` method like the one below:
 
 2. Install the CRD
 
-Next we will install the CRD into the `default` namespace. Using the `crd.yaml`
-you created in the [Manually created crd.yaml](#manually-create-crdyaml)
-section, apply it to the cluster.
+Next we will install the CRD into the `default` namespace. Using the `target/kubernetes/memcacheds.cache.example.com-v1.yml` , apply it to the cluster.
 
 ```
 $ kubectl apply -f crd.yaml
