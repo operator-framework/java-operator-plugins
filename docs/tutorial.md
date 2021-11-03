@@ -511,22 +511,19 @@ We have now implemented the `MemcachedController.java`.
 Please import below dependencies in `MemcachedController.java` file
 
 ```
-import io.fabric8.kubernetes.api.model.ContainerBuilder;
-import io.fabric8.kubernetes.api.model.ContainerPortBuilder;
-import io.fabric8.kubernetes.api.model.LabelSelectorBuilder;
-import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
-import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodSpecBuilder;
-import io.fabric8.kubernetes.api.model.PodTemplateSpecBuilder;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentSpecBuilder;
-import org.apache.commons.collections.CollectionUtils;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.javaoperatorsdk.operator.api.*;
+import io.javaoperatorsdk.operator.api.Context;
+import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
 ```
 
 Also, update `pom.xml` file and import below dependency.
@@ -595,7 +592,7 @@ customresourcedefinition.apiextensions.k8s.io/memcacheds.cache.example.com creat
 -->
 
 ```
-$ kubectl apply -f crd.yaml
+$ kubectl apply -f target/kubernetes/memcacheds.cache.example.com-v1.yml
 customresourcedefinition.apiextensions.k8s.io/memcacheds.cache.example.com created
 ```
 
