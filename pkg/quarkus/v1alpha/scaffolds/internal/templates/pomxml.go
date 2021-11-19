@@ -91,6 +91,11 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
       <artifactId>quarkus-operator-sdk-csv-generator</artifactId>
       <version>${quarkus-sdk.version}</version>
     </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-micrometer-registry-prometheus</artifactId>
+      <version>${quarkus.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
