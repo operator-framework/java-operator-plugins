@@ -41,8 +41,6 @@ type createAPISubcommand struct {
 }
 
 func (opts createAPIOptions) UpdateResource(res *resource.Resource) {
-	fmt.Println("UpdateResource called")
-
 	res.API = &resource.API{
 		CRDVersion: opts.CRDVersion,
 		Namespaced: true,
@@ -69,22 +67,18 @@ func (p *createAPISubcommand) InjectConfig(c config.Config) error {
 }
 
 func (p *createAPISubcommand) Run(fs machinery.Filesystem) error {
-	fmt.Println("Run called")
 	return nil
 }
 
 func (p *createAPISubcommand) Validate() error {
-	fmt.Println("Validate called")
 	return nil
 }
 
 func (p *createAPISubcommand) PostScaffold() error {
-	fmt.Println("PostScaffold called")
 	return nil
 }
 
 func (p *createAPISubcommand) Scaffold(fs machinery.Filesystem) error {
-	fmt.Println("Scaffold called")
 	scaffolder := scaffolds.NewCreateAPIScaffolder(p.config, *p.resource)
 	scaffolder.InjectFS(fs)
 	if err := scaffolder.Scaffold(); err != nil {
@@ -95,7 +89,6 @@ func (p *createAPISubcommand) Scaffold(fs machinery.Filesystem) error {
 }
 
 func (p *createAPISubcommand) InjectResource(res *resource.Resource) error {
-	fmt.Println("InjectResource called")
 	p.resource = res
 
 	// RESOURCE: &{{cache zeusville.com v1 Joke} jokes  0xc00082a640 false 0xc00082a680}
