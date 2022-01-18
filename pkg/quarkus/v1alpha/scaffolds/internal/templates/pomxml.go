@@ -57,24 +57,16 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <fabric8-client.version>5.8.0</fabric8-client.version>
-    <quarkus-sdk.version>2.0.0</quarkus-sdk.version>
-    <quarkus.version>2.4.0.Final</quarkus.version>
+    <quarkus-sdk.version>3.0.1</quarkus-sdk.version>
+    <quarkus.version>2.6.2.Final</quarkus.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-client-bom</artifactId>
-        <version>${fabric8-client.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-bom</artifactId>
-        <version>${quarkus.version}</version>
+        <groupId>io.quarkiverse.operatorsdk</groupId>
+        <artifactId>quarkus-operator-sdk-bom</artifactId>
+        <version>${quarkus-sdk.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
