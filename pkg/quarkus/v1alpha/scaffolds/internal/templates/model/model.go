@@ -49,7 +49,6 @@ func (f *Model) SetTemplateDefaults() error {
 	return nil
 }
 
-// TODO: pass in the name of the operator i.e. replace Memcached
 const modelTemplate = `package {{ .Package }};
 
 {{if .Resource.API.Namespaced}}import io.fabric8.kubernetes.api.model.Namespaced;{{end}}
