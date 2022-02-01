@@ -58,7 +58,7 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus-sdk.version>3.0.2</quarkus-sdk.version>
-    <quarkus.version>2.6.3.Final</quarkus.version>
+    <quarkus.version>2.7.0.Final</quarkus.version>
   </properties>
 
   <dependencyManagement>
