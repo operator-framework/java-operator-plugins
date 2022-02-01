@@ -40,7 +40,7 @@ func (f *Controller) SetTemplateDefaults() error {
 	}
 
 	if f.Path == "" {
-		f.Path = util.PrependJavaPath(f.ClassName+"Controller.java", util.AsPath(f.Package))
+		f.Path = util.PrependJavaPath(f.ClassName+"Reconciler.java", util.AsPath(f.Package))
 	}
 
 	f.TemplateBody = controllerTemplate
