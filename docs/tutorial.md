@@ -164,10 +164,7 @@ The `Memcached` is the Schema for the Memcacheds API.
 
 @Version("v1")
 @Group("cache.example.com")
-@Kind("Memcached")
-@Plural("memcacheds")
-public class Memcached extends CustomResource<MemcachedSpec, MemcachedStatus>
-    implements Namespaced {}
+public class Memcached extends CustomResource<MemcachedSpec, MemcachedStatus> implements Namespaced {}
 ```
 
 You have now created the necessary classes for the API.
@@ -259,18 +256,18 @@ This controller implements the `ResourceController` interface from the
 `java-operator-sdk`. This interface has some important and useful methods.
 
 Initially the `MemcachedController.java` will contain the empty stubs for
-`createOrUpdateResource`. In this section we will fill in
+`reconcile`. In this section we will fill in
 the controller logic in these methods. We will also add a
 `createMemcachedDeployment` method that will create the Deployment for our
 operator and a `labelsForMemcached` method that returns the labels.
 
-The `createOrUpdateResource` get called whenever some
+The `reconcile` get called whenever some
 update/create/delete event occurs in the cluster. This will allow us to react to
 changes to the Deployment.
 
-### createOrUpdateResource
+### reconcile
 
-In this section we will focus on implementing the `createOrUpdateResource`
+In this section we will focus on implementing the `reconcile`
 method. In the `MemcachedController.java` you will see a `// TODO: fill in logic`
 comment. At this line we will first add code to get the Deployment.
 
@@ -285,7 +282,7 @@ comment. At this line we will first add code to get the Deployment.
 
 Once we get the `deployment`, we have a couple of decisions to make. If it is
 `null` it does not exist which means we need to create the deployment. In the
-`MemachedController.java`, in the `createOrUpdateResource` method just below the
+`MemachedController.java`, in the `reconcile` method just below the
 get deployment code we added above, add the following:
 
 ```
@@ -302,7 +299,7 @@ method.
 
 Once we create the deployment, we need to decide whether we have to reconcile it or not.
 If there is no need of reconciliation then return `UpdateControl.noUpdate()`
-else we need to return `UpdateControl.updateStatusSubResource(resource)`
+else we need to return `UpdateControl.updateStatus(resource)`
 
 After getting the Deployment, we get the current and required replicas. Add the
 following lines below the `if (deployment == null)` block in your
@@ -358,13 +355,13 @@ mismatch in either of these conditions then we need to do a reconciliation.
         }
 ```
 
-That's it we have completed the `createOrUpdateResource` method. The method
+That's it we have completed the `reconcile` method. The method
 should now look like the following:
 
 ```
     @Override
-    public UpdateControl<Memcached> createOrUpdateResource(
-        Memcached resource, Context<Memcached> context) {
+    public UpdateControl<Memcached> reconcile(
+        Memcached resource, Context context) {
         // TODO: fill in logic
         Deployment deployment = client.apps()
                 .deployments()
@@ -427,7 +424,7 @@ Let's create the utility method first.
 ### labelsForMemcached
 
 A simple utility method to return a map of the labels we want to attach to some
-of the resources. Below the `createOrUpdateResource` method add the following
+of the resources. Below the `reconcile` method add the following
 helper:
 
 ```
@@ -447,7 +444,7 @@ In the next section, we will walk you through creating the
 Creating Kubernetes objects via APIs can be quite verbose which is why putting
 them in helper methods can make the code more readable. The
 `MemcachedController.java` needs to create a Deployment if it does not exist. In
-the `createOrUpdateResource` we make a call to a helper,
+the `reconcile` we make a call to a helper,
 `createMemcachedDeployment`.
 
 Let's create the `createMemcachedDeployment` method. The following code will use
@@ -501,7 +498,7 @@ Below your `labelsForMemcached(Memcached m)` block in the
     }
 ```
 
-Now we have a `createOrUpdateResource` method. It calls
+Now we have a `reconcile` method. It calls
 `createMemcachedDeployment` which we have implemented above.
 
 We have now implemented the `MemcachedController.java`.
