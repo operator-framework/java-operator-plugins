@@ -1,12 +1,12 @@
-domain: lucky.com
+domain: example.com
 layout:
-- quarkus.javaoperatorsdk.io/v1
-projectName: java-op
+- quarkus.javaoperatorsdk.io/v1-alpha
+projectName: memcached-quarkus-operator
 resources:
 - api:
     crdVersion: v1
     namespaced: true
-  domain: lucky.com
+  domain: example.com
   group: cache
   kind: Memcached
   version: v1
