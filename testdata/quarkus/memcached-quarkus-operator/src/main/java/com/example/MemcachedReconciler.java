@@ -32,7 +32,6 @@ public class MemcachedReconciler implements Reconciler<Memcached> {
 
   @Override
   public UpdateControl<Memcached> reconcile(Memcached resource, Context context) {
-    // TODO: fill in logic
 
     Deployment deployment = client.apps()
             .deployments()
