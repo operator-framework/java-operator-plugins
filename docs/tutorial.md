@@ -262,7 +262,7 @@ the controller logic in these methods. We will also add a
 operator and a `labelsForMemcached` method that returns the labels.
 
 The `reconcile` get called whenever some
-update/create/delete event occurs in the cluster. This will allow us to react to
+update/create event occurs in the cluster. This will allow us to react to
 changes to the Deployment.
 
 ### reconcile
