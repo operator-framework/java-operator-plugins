@@ -1,4 +1,4 @@
-package com.lucky;
+package com.example;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 public class MemcachedStatus {
 
     // Add Status information here
-
+    // Nodes are the names of the memcached pods
     private List<String> nodes;
 
     public List<String> getNodes() {
