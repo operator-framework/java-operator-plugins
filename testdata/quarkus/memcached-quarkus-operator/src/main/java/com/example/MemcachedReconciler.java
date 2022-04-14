@@ -29,7 +29,6 @@ public class MemcachedReconciler implements Reconciler<Memcached> {
     this.client = client;
   }
 
-  // TODO Fill in the rest of the reconciler
 
   @Override
   public UpdateControl<Memcached> reconcile(Memcached resource, Context context) {
