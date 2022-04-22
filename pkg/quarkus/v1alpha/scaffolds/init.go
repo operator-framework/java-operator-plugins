@@ -15,9 +15,10 @@
 package scaffolds
 
 import (
-	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/util"
 	"os"
 	"path/filepath"
+
+	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/util"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 

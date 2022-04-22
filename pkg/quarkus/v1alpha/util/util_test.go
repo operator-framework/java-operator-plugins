@@ -63,4 +63,19 @@ var _ = Describe("util", func() {
 			Expect("MyURL", ToClassname("my_url"))
 		})
 	})
+
+	Describe("SanitizeDomain", func() {
+		It("Sanitizes hyphens", func() {
+			Expect(SanitizeDomain("some-site.foo-bar-hyphen.com")).To(Equal("some_site.foo_bar_hyphen.com"))
+		})
+
+		It("Sanitizes keywords", func() {
+			Expect(SanitizeDomain("foobar.int.static")).To(Equal("foobar.int_.static_"))
+		})
+
+		It("Sanitizes when begins with digit", func() {
+			Expect(SanitizeDomain("123name.example.123com")).To(Equal("_123name.example._123com"))
+		})
+	})
+
 })
