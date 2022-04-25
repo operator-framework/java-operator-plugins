@@ -21,7 +21,6 @@ import (
 	"strings"
 
 	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/scaffolds"
-	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/util"
 	"github.com/spf13/pflag"
 	"k8s.io/apimachinery/pkg/util/validation"
 
@@ -47,12 +46,11 @@ type initSubcommand struct {
 	commandName string
 
 	// Flags
-	group          string
-	domain         string
-	version        string
-	kind           string
-	projectName    string
-	sanitizeDomain bool
+	group       string
+	domain      string
+	version     string
+	kind        string
+	projectName string
 }
 
 var (
@@ -79,20 +77,13 @@ func (p *initSubcommand) BindFlags(fs *pflag.FlagSet) {
 	fs.StringVar(&p.group, groupFlag, "", "resource Group")
 	fs.StringVar(&p.version, versionFlag, "", "resource Version")
 	fs.StringVar(&p.kind, kindFlag, "", "resource Kind")
-
-	fs.BoolVar(&p.sanitizeDomain, "sanitize-domain", true, "whether or not the domain should be sanitized to produce a legal Java package name")
 	p.apiSubcommand.BindFlags(fs)
 }
 
 func (p *initSubcommand) InjectConfig(c config.Config) error {
 	p.config = c
 
-	domain := p.domain
-
-	if p.sanitizeDomain {
-		domain = util.SanitizeDomain(p.domain)
-	}
-	if err := p.config.SetDomain(domain); err != nil {
+	if err := p.config.SetDomain(p.domain); err != nil {
 		return err
 	}
 

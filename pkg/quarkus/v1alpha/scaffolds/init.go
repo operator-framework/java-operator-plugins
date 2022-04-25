@@ -71,7 +71,7 @@ func (s *initScaffolder) Scaffold() error {
 	}
 	return scaffold.Execute(
 		&templates.PomXmlFile{
-			Package:         util.ReverseDomain(s.config.GetDomain()),
+			Package:         util.ReverseDomain(util.SanitizeDomain(s.config.GetDomain())),
 			ProjectName:     s.config.GetProjectName(),
 			OperatorVersion: "0.0.1",
 		},

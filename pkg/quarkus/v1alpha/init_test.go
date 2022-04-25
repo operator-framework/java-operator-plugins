@@ -35,8 +35,7 @@ var _ = Describe("v1", func() {
 
 	BeforeEach(func() {
 		successInitSubcommand = initSubcommand{
-			domain:         "testDomain",
-			sanitizeDomain: true,
+			domain: "testDomain",
 		}
 
 		failureInitSubcommand = initSubcommand{
@@ -67,7 +66,6 @@ var _ = Describe("v1", func() {
 			Expect(successInitSubcommand.group).To(Equal(""))
 			Expect(successInitSubcommand.version).To(Equal(""))
 			Expect(successInitSubcommand.kind).To(Equal(""))
-			Expect(successInitSubcommand.sanitizeDomain).To(BeTrue())
 		})
 	})
 
