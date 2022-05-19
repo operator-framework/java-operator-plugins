@@ -108,7 +108,7 @@ docker-push: ## Push docker image with the manager.
 
 ##@Bundle
 bundle-generate:  
-	cat target/kubernetes/"*" + "." +"{{ .Resource.QualifiedGroup }}" + "-" + "{{ .Resource.Version }}".yml target/kubernetes/kubernetes.yml | operator-sdk generate bundle -q --overwrite --version 0.1.1 --default-channel=stable --channels=stable --package=memcached-quarkus-operator
+	cat target/kubernetes/"*" + "." + "-" + "{{ .Resource.Version }}".yml target/kubernetes/kubernetes.yml | operator-sdk generate bundle -q --overwrite --version 0.1.1 --default-channel=stable --channels=stable --package=memcached-quarkus-operator
 	operator-sdk bundle validate ./bundle
 
 bundle-build:
