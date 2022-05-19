@@ -40,11 +40,11 @@ type Makefile struct {
 	// // AnsibleOperatorVersion is the version of the ansible-operator binary downloaded by the Makefile.
 	// AnsibleOperatorVersion string
 
-	// Package is the source files package
-	Package string
+	// // Package is the source files package
+	// Package string
 
-	// Name of the operator used for the main file.
-	ClassName string
+	// // Name of the operator used for the main file.
+	// ClassName string
 }
 
 // SetTemplateDefaults implements machinery.Template
@@ -73,7 +73,6 @@ func (f *Makefile) SetTemplateDefaults() error {
 }
 
 const makefileTemplate = `
-
 IMAGE_TAG_BASE ?= example.com/memcached-quarkus-operator
 BUNDLE_IMG ?= $(IMAGE_TAG_BASE)-bundle:v$(VERSION)
 
@@ -108,7 +107,7 @@ docker-push: ## Push docker image with the manager.
 
 ##@Bundle
 bundle-generate:  
-	cat target/kubernetes/"*" + "." + "-" + "{{ .Resource.Version }}".yml target/kubernetes/kubernetes.yml | operator-sdk generate bundle -q --overwrite --version 0.1.1 --default-channel=stable --channels=stable --package=memcached-quarkus-operator
+	cat target/kubernetes/*.{{ .Resource.QualifiedGroup }}-{{ .Resource.Version }}.yml target/kubernetes/kubernetes.yml | operator-sdk generate bundle -q --overwrite --version 0.1.1 --default-channel=stable --channels=stable --package=memcached-quarkus-operator
 	operator-sdk bundle validate ./bundle
 
 bundle-build:
