@@ -351,7 +351,7 @@ mismatch in either of these conditions then we need to do a reconciliation.
                 || !CollectionUtils.isEqualCollection(podNames, resource.getStatus().getNodes())) {
             if (resource.getStatus() == null) resource.setStatus(new MemcachedStatus());
             resource.getStatus().setNodes(podNames);
-            return UpdateControl.updateStatusSubResource(resource);
+            return UpdateControl.updateResource(resource);
         }
 ```
 
@@ -398,7 +398,7 @@ should now look like the following:
                  || !CollectionUtils.isEqualCollection(podNames, resource.getStatus().getNodes())) {
              if (resource.getStatus() == null) resource.setStatus(new MemcachedStatus());
              resource.getStatus().setNodes(podNames);
-             return UpdateControl.updateStatusSubResource(resource);
+             return UpdateControl.updateResource(resource);
         }
 
         return UpdateControl.noUpdate();
