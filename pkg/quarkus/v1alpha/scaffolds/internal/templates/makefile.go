@@ -29,6 +29,7 @@ var _ machinery.Template = &Makefile{}
 // Makefile scaffolds the Makefile
 type Makefile struct {
 	machinery.TemplateMixin
+	machinery.ResourceMixin
 
 	// Image is controller manager image name
 	Image string
