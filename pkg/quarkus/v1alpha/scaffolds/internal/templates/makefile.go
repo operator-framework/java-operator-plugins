@@ -20,10 +20,6 @@ import (
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 )
 
-const (
-	filePathSep = "*" + "{{ .Resource.QualifiedGroup }}" + "-" + "{{ .Resource.Version }}"
-)
-
 var _ machinery.Template = &Makefile{}
 
 // Makefile scaffolds the Makefile
