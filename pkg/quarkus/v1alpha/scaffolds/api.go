@@ -15,8 +15,6 @@
 package scaffolds
 
 import (
-	"fmt"
-
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
@@ -61,7 +59,8 @@ func (s *apiScaffolder) Scaffold() error {
 		machinery.WithResource(&s.resource),
 	)
 
-	if err := scaffold.Execute(
+	var createAPITemplates []machinery.Builder
+	createAPITemplates = append(createAPITemplates,
 		&model.Model{
 			Package:   util.ReverseDomain(util.SanitizeDomain(s.config.GetDomain())),
 			ClassName: util.ToClassname(s.resource.Kind),
@@ -78,9 +77,7 @@ func (s *apiScaffolder) Scaffold() error {
 			Package:   util.ReverseDomain(util.SanitizeDomain(s.config.GetDomain())),
 			ClassName: util.ToClassname(s.resource.Kind),
 		},
-	); err != nil {
-		return fmt.Errorf("error scaffolding APIs: %w", err)
-	}
+	)
 
-	return nil
+	return scaffold.Execute(createAPITemplates...)
 }

@@ -80,14 +80,6 @@ func (p *createAPISubcommand) Validate() error {
 }
 
 func (p *createAPISubcommand) PostScaffold() error {
-	// fmt.Printf("Next: define a resource with:$  create api=%s\n", p.resource.QualifiedGroup())
-	// fmt.Printf("Next: define a resource with:$  create api=%s\n", p.resource.Version)
-	// fmt.Printf("Next: define a resource with:$  create api=%s\n", p.config.GetProjectName())
-
-	// projectName := p.config.GetProjectName()
-	// groupName := p.resource.QualifiedGroup()
-	// versionName := p.resource.Version
-
 	return nil
 }
 
