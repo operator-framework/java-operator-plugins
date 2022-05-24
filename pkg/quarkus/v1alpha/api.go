@@ -17,7 +17,9 @@ package v1
 import (
 	"errors"
 	"fmt"
+	"os"
 
+	"github.com/spf13/afero"
 	"github.com/spf13/pflag"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
@@ -27,6 +29,8 @@ import (
 
 	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/scaffolds"
 )
+
+const filePath = "Makefile"
 
 type createAPIOptions struct {
 	CRDVersion string
@@ -76,11 +80,39 @@ func (p *createAPISubcommand) Validate() error {
 }
 
 func (p *createAPISubcommand) PostScaffold() error {
+	// fmt.Printf("Next: define a resource with:$  create api=%s\n", p.resource.QualifiedGroup())
+	// fmt.Printf("Next: define a resource with:$  create api=%s\n", p.resource.Version)
+	// fmt.Printf("Next: define a resource with:$  create api=%s\n", p.config.GetProjectName())
+
+	// projectName := p.config.GetProjectName()
+	// groupName := p.resource.QualifiedGroup()
+	// versionName := p.resource.Version
+
 	return nil
 }
 
 func (p *createAPISubcommand) Scaffold(fs machinery.Filesystem) error {
 	scaffolder := scaffolds.NewCreateAPIScaffolder(p.config, *p.resource)
+
+	makefileBytes, err := afero.ReadFile(fs.FS, filePath)
+	if err != nil {
+		return err
+	}
+
+	projectName := p.config.GetProjectName()
+	groupName := p.resource.QualifiedGroup()
+	versionName := p.resource.Version
+
+	makefileBytes = append(makefileBytes, []byte(fmt.Sprintf(makefileBundleVarFragment, groupName, versionName, projectName))...)
+
+	var mode os.FileMode = 0644
+	if info, err := fs.FS.Stat(filePath); err == nil {
+		mode = info.Mode()
+	}
+	if err := afero.WriteFile(fs.FS, filePath, makefileBytes, mode); err != nil {
+		return fmt.Errorf("error updating Makefile: %w", err)
+	}
+
 	scaffolder.InjectFS(fs)
 	if err := scaffolder.Scaffold(); err != nil {
 		return err
@@ -116,3 +148,18 @@ func (p *createAPISubcommand) InjectResource(res *resource.Resource) error {
 
 	return nil
 }
+
+const (
+	makefileBundleVarFragment = `
+##@Bundle
+bundle-generate:  
+	cat target/kubernetes/*.%[1]s-%[2]s.yml target/kubernetes/kubernetes.yml | operator-sdk generate bundle -q --overwrite --version 0.1.1 --default-channel=stable --channels=stable --package=%[3]s
+	operator-sdk bundle validate ./bundle
+	
+bundle-build:
+	docker build -f bundle.Dockerfile -t $(BUNDLE_IMG) .
+	
+bundle-push: ## Push the bundle image.
+	docker push $(BUNDLE_IMG)
+`
+)

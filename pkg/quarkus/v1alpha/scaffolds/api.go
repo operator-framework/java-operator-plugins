@@ -15,12 +15,13 @@
 package scaffolds
 
 import (
+	"fmt"
+
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugins"
 
-	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/scaffolds/internal/templates"
 	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/scaffolds/internal/templates/controller"
 	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/scaffolds/internal/templates/model"
 	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/util"
@@ -60,8 +61,7 @@ func (s *apiScaffolder) Scaffold() error {
 		machinery.WithResource(&s.resource),
 	)
 
-	var createAPITemplates []machinery.Builder
-	createAPITemplates = append(createAPITemplates,
+	if err := scaffold.Execute(
 		&model.Model{
 			Package:   util.ReverseDomain(util.SanitizeDomain(s.config.GetDomain())),
 			ClassName: util.ToClassname(s.resource.Kind),
@@ -78,11 +78,9 @@ func (s *apiScaffolder) Scaffold() error {
 			Package:   util.ReverseDomain(util.SanitizeDomain(s.config.GetDomain())),
 			ClassName: util.ToClassname(s.resource.Kind),
 		},
-		&templates.Makefile{
-			Image:            "",
-			KustomizeVersion: "v3.5.4",
-		},
-	)
+	); err != nil {
+		return fmt.Errorf("error scaffolding APIs: %w", err)
+	}
 
-	return scaffold.Execute(createAPITemplates...)
+	return nil
 }

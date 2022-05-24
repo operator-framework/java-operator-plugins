@@ -22,10 +22,11 @@ import (
 
 var _ machinery.Template = &Makefile{}
 
+const defaultWatchesFile = "Makefile.yaml"
+
 // Makefile scaffolds the Makefile
 type Makefile struct {
 	machinery.TemplateMixin
-	machinery.ResourceMixin
 
 	// Image is controller manager image name
 	Image string
@@ -35,12 +36,6 @@ type Makefile struct {
 
 	// // AnsibleOperatorVersion is the version of the ansible-operator binary downloaded by the Makefile.
 	// AnsibleOperatorVersion string
-
-	// // Package is the source files package
-	// Package string
-
-	// // Name of the operator used for the main file.
-	// ClassName string
 }
 
 // SetTemplateDefaults implements machinery.Template
@@ -100,17 +95,6 @@ docker-build: ## Build docker image with the manager.
 
 docker-push: ## Push docker image with the manager.
 	mvn package -Dquarkus.container-image.push=true -Dquarkus.container-image.image=${IMG}
-
-##@Bundle
-bundle-generate:  
-	cat target/kubernetes/*.{{ .Resource.QualifiedGroup }}-{{ .Resource.Version }}.yml target/kubernetes/kubernetes.yml | operator-sdk generate bundle -q --overwrite --version 0.1.1 --default-channel=stable --channels=stable --package=memcached-quarkus-operator
-	operator-sdk bundle validate ./bundle
-
-bundle-build:
-	docker build -f bundle.Dockerfile -t $(BUNDLE_IMG) .
-
-bundle-push: ## Push the bundle image.
-	docker push $(BUNDLE_IMG)
 
 ##@ Deployment
 
