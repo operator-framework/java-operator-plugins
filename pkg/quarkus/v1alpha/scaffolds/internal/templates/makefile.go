@@ -22,8 +22,6 @@ import (
 
 var _ machinery.Template = &Makefile{}
 
-const defaultWatchesFile = "Makefile.yaml"
-
 // Makefile scaffolds the Makefile
 type Makefile struct {
 	machinery.TemplateMixin
