@@ -100,10 +100,11 @@ func (p *createAPISubcommand) Scaffold(fs machinery.Filesystem) error {
 	}
 
 	projectName := p.config.GetProjectName()
+	plurals := p.resource.Plural
 	groupName := p.resource.QualifiedGroup()
 	versionName := p.resource.Version
 
-	makefileBytes = append(makefileBytes, []byte(fmt.Sprintf(makefileBundleVarFragment, groupName, versionName, projectName))...)
+	makefileBytes = append(makefileBytes, []byte(fmt.Sprintf(makefileBundleVarFragment, plurals, groupName, versionName, projectName))...)
 
 	var mode os.FileMode = 0644
 	if info, err := fs.FS.Stat(filePath); err == nil {
@@ -152,13 +153,16 @@ func (p *createAPISubcommand) InjectResource(res *resource.Resource) error {
 const (
 	makefileBundleVarFragment = `
 ##@Bundle
-bundle-generate:  
-	cat target/kubernetes/*.%[1]s-%[2]s.yml target/kubernetes/kubernetes.yml | operator-sdk generate bundle -q --overwrite --version 0.1.1 --default-channel=stable --channels=stable --package=%[3]s
+.PHONY: bundle
+bundle:  ## Generate bundle manifests and metadata, then validate generated files.
+	cat target/kubernetes/%[1]s.%[2]s-%[3]s.yml target/kubernetes/kubernetes.yml | operator-sdk generate bundle -q --overwrite --version 0.1.1 --default-channel=stable --channels=stable --package=%[4]s
 	operator-sdk bundle validate ./bundle
 	
-bundle-build:
+.PHONY: bundle-build
+bundle-build: ## Build the bundle image.
 	docker build -f bundle.Dockerfile -t $(BUNDLE_IMG) .
 	
+.PHONY bundle-push
 bundle-push: ## Push the bundle image.
 	docker push $(BUNDLE_IMG)
 `
