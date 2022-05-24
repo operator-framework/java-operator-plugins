@@ -100,11 +100,10 @@ func (p *createAPISubcommand) Scaffold(fs machinery.Filesystem) error {
 	}
 
 	projectName := p.config.GetProjectName()
-	plurals := p.resource.Plural
-	groupName := p.resource.QualifiedGroup()
-	versionName := p.resource.Version
 
-	makefileBytes = append(makefileBytes, []byte(fmt.Sprintf(makefileBundleVarFragment, plurals, groupName, versionName, projectName))...)
+	makefileBytes = append(makefileBytes, []byte(fmt.Sprintf(makefileBundleVarFragment, p.resource.Plural, p.resource.QualifiedGroup(), p.resource.Version, projectName))...)
+
+	makefileBytes = append([]byte(fmt.Sprintf(makefileBundleImageFragement, p.config.GetDomain(), projectName)), makefileBytes...)
 
 	var mode os.FileMode = 0644
 	if info, err := fs.FS.Stat(filePath); err == nil {
@@ -165,5 +164,12 @@ bundle-build: ## Build the bundle image.
 .PHONY bundle-push
 bundle-push: ## Push the bundle image.
 	docker push $(BUNDLE_IMG)
+`
+)
+
+const (
+	makefileBundleImageFragement = `
+IMAGE_TAG_BASE ?= %[1]s/%[2]s
+BUNDLE_IMG ?= $(IMAGE_TAG_BASE)-bundle:v$(VERSION)
 `
 )

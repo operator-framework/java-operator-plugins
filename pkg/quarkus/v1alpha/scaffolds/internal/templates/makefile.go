@@ -64,9 +64,6 @@ func (f *Makefile) SetTemplateDefaults() error {
 }
 
 const makefileTemplate = `
-IMAGE_TAG_BASE ?= example.com/memcached-quarkus-operator
-BUNDLE_IMG ?= $(IMAGE_TAG_BASE)-bundle:v$(VERSION)
-
 # Image URL to use all building/pushing image targets
 IMG ?= {{ .Image }}
 
