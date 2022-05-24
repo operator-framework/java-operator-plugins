@@ -18,6 +18,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/spf13/afero"
 	"github.com/spf13/pflag"
@@ -92,6 +94,13 @@ func (p *createAPISubcommand) Scaffold(fs machinery.Filesystem) error {
 	}
 
 	projectName := p.config.GetProjectName()
+	if projectName == "" {
+		dir, err := os.Getwd()
+		if err != nil {
+			return fmt.Errorf("error getting current directory: %w", err)
+		}
+		projectName = strings.ToLower(filepath.Base(dir))
+	}
 
 	makefileBytes = append(makefileBytes, []byte(fmt.Sprintf(makefileBundleVarFragment, p.resource.Plural, p.resource.QualifiedGroup(), p.resource.Version, projectName))...)
 
