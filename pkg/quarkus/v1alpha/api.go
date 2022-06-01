@@ -15,8 +15,10 @@
 package v1
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -27,6 +29,7 @@ import (
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
+	"sigs.k8s.io/kubebuilder/v3/pkg/plugin/util"
 	pluginutil "sigs.k8s.io/kubebuilder/v3/pkg/plugin/util"
 
 	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/scaffolds"
@@ -88,33 +91,39 @@ func (p *createAPISubcommand) PostScaffold() error {
 func (p *createAPISubcommand) Scaffold(fs machinery.Filesystem) error {
 	scaffolder := scaffolds.NewCreateAPIScaffolder(p.config, *p.resource)
 
-	makefileBytes, err := afero.ReadFile(fs.FS, filePath)
-	if err != nil {
-		return err
-	}
+	var s = fmt.Sprintf(makefileBundleCRDFile, p.resource.Plural, p.resource.QualifiedGroup(), p.resource.Version)
+	findOldFilesForReplacement(filePath, "test", "here", s)
 
-	projectName := p.config.GetProjectName()
-	if projectName == "" {
-		dir, err := os.Getwd()
+	if !bVal {
+		makefileBytes, err := afero.ReadFile(fs.FS, filePath)
 		if err != nil {
-			return fmt.Errorf("error getting current directory: %w", err)
+			return err
 		}
-		projectName = strings.ToLower(filepath.Base(dir))
-	}
 
-	makefileBytes = append(makefileBytes, []byte(fmt.Sprintf(makefileBundleVarFragment, p.resource.Plural, p.resource.QualifiedGroup(), p.resource.Version, projectName))...)
+		projectName := p.config.GetProjectName()
+		if projectName == "" {
+			dir, err := os.Getwd()
+			if err != nil {
+				return fmt.Errorf("error getting current directory: %w", err)
+			}
+			projectName = strings.ToLower(filepath.Base(dir))
+		}
 
-	makefileBytes = append([]byte(fmt.Sprintf(makefileBundleImageFragement, p.config.GetDomain(), projectName)), makefileBytes...)
+		makefileBytes = append(makefileBytes, []byte(fmt.Sprintf(makefileBundleVarFragment, p.resource.Plural, p.resource.QualifiedGroup(), p.resource.Version, projectName))...)
 
-	var mode os.FileMode = 0644
-	if info, err := fs.FS.Stat(filePath); err == nil {
-		mode = info.Mode()
-	}
-	if err := afero.WriteFile(fs.FS, filePath, makefileBytes, mode); err != nil {
-		return fmt.Errorf("error updating Makefile: %w", err)
+		makefileBytes = append([]byte(fmt.Sprintf(makefileBundleImageFragement, p.config.GetDomain(), projectName)), makefileBytes...)
+
+		var mode os.FileMode = 0644
+		if info, err := fs.FS.Stat(filePath); err == nil {
+			mode = info.Mode()
+		}
+		if err := afero.WriteFile(fs.FS, filePath, makefileBytes, mode); err != nil {
+			return fmt.Errorf("error updating Makefile: %w", err)
+		}
 	}
 
 	scaffolder.InjectFS(fs)
+
 	if err := scaffolder.Scaffold(); err != nil {
 		return err
 	}
@@ -150,11 +159,64 @@ func (p *createAPISubcommand) InjectResource(res *resource.Resource) error {
 	return nil
 }
 
+var bVal bool
+
+// ReplaceInFile replaces all instances of old with new in the file at path.
+func findOldFilesForReplacement(path, old, new, newfile string) error {
+
+	f, err := os.Open(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// remember to close the file at the end of the program
+	defer f.Close()
+
+	// read the file line by line using scanner
+	scanner := bufio.NewScanner(f)
+
+	for scanner.Scan() {
+		// do something with a line
+		if scanner.Text() == "## marker" {
+			bVal = true
+			break
+		}
+	}
+
+	if bVal {
+		scanner.Scan()
+		line := scanner.Text()
+
+		splitByPipe := strings.Split(line, "|")
+
+		finalString := strings.TrimSuffix(strings.TrimPrefix(strings.TrimSpace(splitByPipe[0]), "cat"), "target/kubernetes/kubernetes.yml")
+
+		merge := "cat" + finalString + newfile + " target/kubernetes/kubernetes.yml" + " |" + splitByPipe[1]
+		// fmt.Printf("merge : %s\n", merge)
+
+		err = util.ReplaceInFile(path, line, merge)
+		if err != nil {
+			return err
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return errors.New("unable to find the content to be replaced")
+	}
+	return nil
+}
+
+const (
+	makefileBundleCRDFile = `target/kubernetes/%[1]s.%[2]s-%[3]s.yml`
+)
+
+//target/kubernetes/%[1]s.%[2]s-%[3]s.yml target/kubernetes/kubernetes.yml
 const (
 	makefileBundleVarFragment = `
 ##@Bundle
 .PHONY: bundle
 bundle:  ## Generate bundle manifests and metadata, then validate generated files.
+## marker
 	cat target/kubernetes/%[1]s.%[2]s-%[3]s.yml target/kubernetes/kubernetes.yml | operator-sdk generate bundle -q --overwrite --version 0.1.1 --default-channel=stable --channels=stable --package=%[4]s
 	operator-sdk bundle validate ./bundle
 	
