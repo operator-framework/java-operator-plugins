@@ -37,8 +37,6 @@ import (
 
 const filePath = "Makefile"
 
-var bVal bool
-
 type createAPIOptions struct {
 	CRDVersion string
 	Namespaced bool
@@ -94,9 +92,9 @@ func (p *createAPISubcommand) Scaffold(fs machinery.Filesystem) error {
 	scaffolder := scaffolds.NewCreateAPIScaffolder(p.config, *p.resource)
 
 	var s = fmt.Sprintf(makefileBundleCRDFile, p.resource.Plural, p.resource.QualifiedGroup(), p.resource.Version)
-	findOldFilesForReplacement(filePath, s)
+	foundLine := findOldFilesForReplacement(filePath, s)
 
-	if !bVal {
+	if !foundLine {
 		makefileBytes, err := afero.ReadFile(fs.FS, filePath)
 		if err != nil {
 			return err
@@ -162,7 +160,7 @@ func (p *createAPISubcommand) InjectResource(res *resource.Resource) error {
 }
 
 // findOldFilesForReplacement verifies marker (## marker) and if it found then merge new api CRD file to the odler logic
-func findOldFilesForReplacement(path, newfile string) error {
+func findOldFilesForReplacement(path, newfile string) bool {
 
 	f, err := os.Open(path)
 	if err != nil {
@@ -174,37 +172,40 @@ func findOldFilesForReplacement(path, newfile string) error {
 
 	// read the file line by line using scanner
 	scanner := bufio.NewScanner(f)
-
+	var foundMarker bool
 	for scanner.Scan() {
 		// do something with a line
 		if scanner.Text() == "## marker" {
-			bVal = true
+			foundMarker = true
 			break
 		}
 	}
 
-	if bVal {
+	if foundMarker {
 		scanner.Scan()
-		line := scanner.Text()
+		catLine := scanner.Text()
 
-		splitByPipe := strings.Split(line, "|")
+		splitByPipe := strings.Split(catLine, "|")
 
 		finalString := strings.TrimSuffix(strings.TrimPrefix(strings.TrimSpace(splitByPipe[0]), "cat"), "target/kubernetes/kubernetes.yml")
 
-		merge := "cat" + finalString + newfile + " target/kubernetes/kubernetes.yml" + " |" + splitByPipe[1]
+		updatedLine := "cat" + finalString + newfile + " target/kubernetes/kubernetes.yml" + " |" + splitByPipe[1]
 		// fmt.Printf("merge : %s\n", merge)
 
+		if err := scanner.Err(); err != nil {
+			log.Fatal(err, "Failed to scan the line from Makefile")
+			return false
+		}
+
 		// ReplaceInFile replaces all instances of old with new in the file at path.
-		err = util.ReplaceInFile(path, line, merge)
+		err = util.ReplaceInFile(path, catLine, updatedLine)
 		if err != nil {
-			return err
+			log.Fatal(err, "Failed to Replace in Makefile")
+			return false
 		}
 	}
 
-	if err := scanner.Err(); err != nil {
-		return errors.New("unable to find the content to be replaced")
-	}
-	return nil
+	return foundMarker
 }
 
 const (
