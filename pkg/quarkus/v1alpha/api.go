@@ -189,7 +189,7 @@ func findOldFilesForReplacement(path, newfile string) bool {
 
 		finalString := strings.TrimSuffix(strings.TrimPrefix(strings.TrimSpace(splitByPipe[0]), "cat"), "target/kubernetes/kubernetes.yml")
 
-		updatedLine := "cat" + finalString + newfile + " target/kubernetes/kubernetes.yml" + " |" + splitByPipe[1]
+		updatedLine := "	" + "cat" + finalString + newfile + " target/kubernetes/kubernetes.yml" + " |" + splitByPipe[1]
 		// fmt.Printf("merge : %s\n", merge)
 
 		if err := scanner.Err(); err != nil {
