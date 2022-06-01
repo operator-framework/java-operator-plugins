@@ -37,6 +37,8 @@ import (
 
 const filePath = "Makefile"
 
+var bVal bool
+
 type createAPIOptions struct {
 	CRDVersion string
 	Namespaced bool
@@ -92,7 +94,7 @@ func (p *createAPISubcommand) Scaffold(fs machinery.Filesystem) error {
 	scaffolder := scaffolds.NewCreateAPIScaffolder(p.config, *p.resource)
 
 	var s = fmt.Sprintf(makefileBundleCRDFile, p.resource.Plural, p.resource.QualifiedGroup(), p.resource.Version)
-	findOldFilesForReplacement(filePath, "test", "here", s)
+	findOldFilesForReplacement(filePath, s)
 
 	if !bVal {
 		makefileBytes, err := afero.ReadFile(fs.FS, filePath)
@@ -159,10 +161,8 @@ func (p *createAPISubcommand) InjectResource(res *resource.Resource) error {
 	return nil
 }
 
-var bVal bool
-
-// ReplaceInFile replaces all instances of old with new in the file at path.
-func findOldFilesForReplacement(path, old, new, newfile string) error {
+// findOldFilesForReplacement verifies marker (## marker) and if it found then merge new api CRD file to the odler logic
+func findOldFilesForReplacement(path, newfile string) error {
 
 	f, err := os.Open(path)
 	if err != nil {
@@ -194,6 +194,7 @@ func findOldFilesForReplacement(path, old, new, newfile string) error {
 		merge := "cat" + finalString + newfile + " target/kubernetes/kubernetes.yml" + " |" + splitByPipe[1]
 		// fmt.Printf("merge : %s\n", merge)
 
+		// ReplaceInFile replaces all instances of old with new in the file at path.
 		err = util.ReplaceInFile(path, line, merge)
 		if err != nil {
 			return err
