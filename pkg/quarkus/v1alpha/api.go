@@ -211,7 +211,6 @@ const (
 	makefileBundleCRDFile = `target/kubernetes/%[1]s.%[2]s-%[3]s.yml`
 )
 
-//target/kubernetes/%[1]s.%[2]s-%[3]s.yml target/kubernetes/kubernetes.yml
 const (
 	makefileBundleVarFragment = `
 ##@Bundle
