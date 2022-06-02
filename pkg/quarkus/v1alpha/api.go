@@ -18,24 +18,26 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/scaffolds"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/afero"
 	"github.com/spf13/pflag"
+
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin/util"
 	pluginutil "sigs.k8s.io/kubebuilder/v3/pkg/plugin/util"
-
-	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/scaffolds"
 )
 
 const filePath = "Makefile"
+
+// var log = logf.Log.WithName("proxy")
 
 type createAPIOptions struct {
 	CRDVersion string
@@ -193,14 +195,14 @@ func findOldFilesForReplacement(path, newfile string) bool {
 		// fmt.Printf("merge : %s\n", merge)
 
 		if err := scanner.Err(); err != nil {
-			log.Fatal(err, "Failed to scan the line from Makefile")
+			log.Error(err, "Unable to scan existing bundle target command from the Makefile. New bundle target command being created. This may overwrite any existing commands.")
 			return false
 		}
 
 		// ReplaceInFile replaces all instances of old with new in the file at path.
 		err = util.ReplaceInFile(path, catLine, updatedLine)
 		if err != nil {
-			log.Fatal(err, "Failed to Replace in Makefile")
+			log.Error(err, "Unable to replace existing bundle target command from the Makefile. New bundle target command being created. This may overwrite any existing commands.")
 			return false
 		}
 	}
