@@ -225,7 +225,7 @@ bundle:  ## Generate bundle manifests and metadata, then validate generated file
 bundle-build: ## Build the bundle image.
 	docker build -f bundle.Dockerfile -t $(BUNDLE_IMG) .
 	
-.PHONY bundle-push
+.PHONY: bundle-push
 bundle-push: ## Push the bundle image.
 	docker push $(BUNDLE_IMG)
 `
@@ -233,6 +233,7 @@ bundle-push: ## Push the bundle image.
 
 const (
 	makefileBundleImageFragement = `
+VERSION ?= 0.0.1
 IMAGE_TAG_BASE ?= %[1]s/%[2]s
 BUNDLE_IMG ?= $(IMAGE_TAG_BASE)-bundle:v$(VERSION)
 `
