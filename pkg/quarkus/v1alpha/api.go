@@ -37,8 +37,6 @@ import (
 
 const filePath = "Makefile"
 
-// var log = logf.Log.WithName("proxy")
-
 type createAPIOptions struct {
 	CRDVersion string
 	Namespaced bool
