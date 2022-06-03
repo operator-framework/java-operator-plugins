@@ -566,17 +566,17 @@ conveniently build your and push your operator's image to registry. In our
 example, we are using `quay.io`, but any docker registry should work.
 
 ```
-make docker-build docker-push IMG=quay.io/YOURUSER/memcached-quarkus-operator:0.0.1
+make docker-build docker-push IMG=quay.io/YOURUSER/memcached-quarkus-operator:v0.0.1
 ```
 
 This will build the docker image
-`quay.io/YOURUSER/memcached-quarkus-operator:0.0.1` and push it to the registry.
+`quay.io/YOURUSER/memcached-quarkus-operator:v0.0.1` and push it to the registry.
 
 You can verify it is in your docker registry:
 
 ```
 $ docker images | grep memcached
-quay.io/YOURUSER/memcached-quarkus-operator                   0.0.1               c84d2616bc1b        29 seconds ago       236MB
+quay.io/YOURUSER/memcached-quarkus-operator                   v0.0.1               c84d2616bc1b        29 seconds ago       236MB
 ```
 
 2. Install the CRD
