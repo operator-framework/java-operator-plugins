@@ -801,7 +801,7 @@ operator-sdk olm install
 
 Bundle your operator, then build and push the bundle image. The [bundle](https://github.com/operator-framework/operator-registry/blob/v1.23.0/docs/design/operator-bundle.md#operator-bundle) target generates a bundle in the `bundle` directory containing manifests and metadata defining your operator. `bundle-build` and `bundle-push` build and push a bundle image defined by `bundle.Dockerfile`.
 
-Before running below command export the variables as shown below.
+Before running below command export environment variables as shown below.
 
 ```
 $ export USERNAME=<container-registry-username>
