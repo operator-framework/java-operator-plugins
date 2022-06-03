@@ -542,6 +542,14 @@ You can run the operator in a couple of ways. You can run it locally where the
 operator runs on your development machine and talks to the cluster. Or it can
 build images of your operator and run it directly in the cluster.
 
+
+There are three ways to run the operator:
+
+* Running the operator in the cluster
+* Running locally outside the cluster
+* Managed by the [Operator Lifecycle Manager (OLM)](https://sdk.operatorframework.io/docs/olm-integration/tutorial-bundle/#enabling-olm) in [bundle](https://sdk.operatorframework.io/docs/olm-integration/quickstart-bundle/) format
+
+
 In this section we will:
 
 * install the CRD
@@ -566,17 +574,17 @@ conveniently build your and push your operator's image to registry. In our
 example, we are using `quay.io`, but any docker registry should work.
 
 ```
-make docker-build docker-push IMG=quay.io/YOURUSER/memcached-quarkus-operator:0.0.1
+make docker-build docker-push IMG=quay.io/YOURUSER/memcached-quarkus-operator:v0.0.1
 ```
 
 This will build the docker image
-`quay.io/YOURUSER/memcached-quarkus-operator:0.0.1` and push it to the registry.
+`quay.io/YOURUSER/memcached-quarkus-operator:v0.0.1` and push it to the registry.
 
 You can verify it is in your docker registry:
 
 ```
 $ docker images | grep memcached
-quay.io/YOURUSER/memcached-quarkus-operator                   0.0.1               c84d2616bc1b        29 seconds ago       236MB
+quay.io/YOURUSER/memcached-quarkus-operator                   v0.0.1               c84d2616bc1b        29 seconds ago       236MB
 ```
 
 2. Install the CRD
@@ -783,3 +791,50 @@ pod/memcached-sample-6c765df685-mfqnz                      1/1     Running   0  
 
 If you modify the size field of the `memcached-sample.yaml` and re-apply it. The
 operator will trigger a reconcile and adjust the sample pods to the size given.
+
+### Deploy your Operator with OLM
+First, install [OLM](https://sdk.operatorframework.io/docs/olm-integration/tutorial-bundle/#enabling-olm):
+
+```
+operator-sdk olm install
+```
+
+Bundle your operator, then build and push the bundle image. The [bundle](https://github.com/operator-framework/operator-registry/blob/v1.23.0/docs/design/operator-bundle.md#operator-bundle) target generates a bundle in the `bundle` directory containing manifests and metadata defining your operator. `bundle-build` and `bundle-push` build and push a bundle image defined by `bundle.Dockerfile`.
+
+Before running below command export environment variables as shown below.
+
+```
+$ export USERNAME=<container-registry-username>
+$ export VERSION=0.0.1
+$ export IMG=docker.io/$USERNAME/memcached-operator:v$VERSION // location where your operator image is hosted
+$ export BUNDLE_IMG=docker.io/$USERNAME/memcached-operator-bundle:v$VERSION // location where your bundle will be hosted
+```
+
+```
+make bundle bundle-build bundle-push
+```
+
+Finally, run your bundle. If your bundle image is hosted in a registry that is private and/or has a custom CA, these [configuration steps](https://sdk.operatorframework.io/docs/olm-integration/cli-overview/#private-bundle-and-catalog-image-registries) must be completed.
+
+
+```
+operator-sdk run bundle <some-registry>/memcached-operator-bundle:v0.0.1
+```
+
+The result of the above command is as below:
+
+```
+INFO[0009] Successfully created registry pod: docker-io-013859989-memcached-quarkus-operator-bundle-v0-1-1 
+INFO[0009] Created CatalogSource: memcached-quarkus-operator-catalog 
+INFO[0009] OperatorGroup "operator-sdk-og" created      
+INFO[0009] Created Subscription: memcached-quarkus-operator-v0-1-1-sub 
+INFO[0013] Approved InstallPlan install-6n8vm for the Subscription: memcached-quarkus-operator-v0-1-1-sub 
+INFO[0013] Waiting for ClusterServiceVersion "default/memcached-quarkus-operator.v0.1.1" to reach 'Succeeded' phase 
+INFO[0013]   Waiting for ClusterServiceVersion "default/memcached-quarkus-operator.v0.1.1" to appear 
+INFO[0020]   Found ClusterServiceVersion "default/memcached-quarkus-operator.v0.1.1" phase: Pending 
+INFO[0021]   Found ClusterServiceVersion "default/memcached-quarkus-operator.v0.1.1" phase: Installing 
+INFO[0051]   Found ClusterServiceVersion "default/memcached-quarkus-operator.v0.1.1" phase: Succeeded 
+INFO[0051] OLM has successfully installed "memcached-quarkus-operator.v0.1.1" 
+```
+
+Check out the [docs](https://sdk.operatorframework.io/docs/olm-integration/tutorial-bundle/) for a deep dive into operator-sdk's OLM integration.
