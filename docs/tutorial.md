@@ -542,6 +542,14 @@ You can run the operator in a couple of ways. You can run it locally where the
 operator runs on your development machine and talks to the cluster. Or it can
 build images of your operator and run it directly in the cluster.
 
+
+There are three ways to run the operator:
+
+* Running the operator in the cluster
+* Running locally outside the cluster
+* Managed by the [Operator Lifecycle Manager (OLM)](https://sdk.operatorframework.io/docs/olm-integration/tutorial-bundle/#enabling-olm) in [bundle](https://sdk.operatorframework.io/docs/olm-integration/quickstart-bundle/) format
+
+
 In this section we will:
 
 * install the CRD
@@ -783,3 +791,25 @@ pod/memcached-sample-6c765df685-mfqnz                      1/1     Running   0  
 
 If you modify the size field of the `memcached-sample.yaml` and re-apply it. The
 operator will trigger a reconcile and adjust the sample pods to the size given.
+
+### Deploy your Operator with OLM
+First, install [OLM](https://sdk.operatorframework.io/docs/olm-integration/tutorial-bundle/#enabling-olm):
+
+```
+operator-sdk olm install
+```
+
+Bundle your operator, then build and push the bundle image. The [bundle](https://github.com/operator-framework/operator-registry/blob/v1.16.1/docs/design/operator-bundle.md#operator-bundle) target generates a bundle in the bundle directory containing manifests and metadata defining your operator. bundle-build and bundle-push build and push a bundle image defined by bundle.Dockerfile.
+
+```
+make bundle bundle-build bundle-push
+```
+
+Finally, run your bundle. If your bundle image is hosted in a registry that is private and/or has a custom CA, these [configuration steps](https://sdk.operatorframework.io/docs/olm-integration/cli-overview/#private-bundle-and-catalog-image-registries) must be complete.
+
+
+```
+operator-sdk run bundle <some-registry>/memcached-operator-bundle:v0.0.1
+```
+
+Check out the [docs](https://sdk.operatorframework.io/docs/olm-integration/tutorial-bundle/) for a deep dive into operator-sdk's OLM integration.
