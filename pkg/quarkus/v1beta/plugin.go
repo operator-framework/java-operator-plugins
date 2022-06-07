@@ -25,7 +25,7 @@ const pluginName = "quarkus.javaoperatorsdk.io"
 
 var (
 	supportedProjectVersions = []config.Version{v3.Version}
-	pluginVersion            = plugin.Version{Number: 1, Stage: stage.Alpha}
+	pluginVersion            = plugin.Version{Number: 1, Stage: stage.Beta}
 )
 
 var (

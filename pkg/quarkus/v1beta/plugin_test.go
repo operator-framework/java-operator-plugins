@@ -34,7 +34,7 @@ var _ = Describe("v1", func() {
 
 	Describe("Version", func() {
 		It("should return the plugin version", func() {
-			Expect(testPlugin.Version(), plugin.Version{Number: 1, Stage: stage.Alpha})
+			Expect(testPlugin.Version(), plugin.Version{Number: 1, Stage: stage.Beta})
 		})
 	})
 

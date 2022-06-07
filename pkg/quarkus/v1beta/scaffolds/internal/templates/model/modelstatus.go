@@ -17,14 +17,13 @@ package model
 import (
 	"fmt"
 
+	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1beta/scaffolds/internal/templates/util"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
-
-	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1alpha/scaffolds/internal/templates/util"
 )
 
-var _ machinery.Template = &ModelSpec{}
+var _ machinery.Template = &ModelStatus{}
 
-type ModelSpec struct {
+type ModelStatus struct {
 	machinery.TemplateMixin
 
 	// Package is the source files package
@@ -34,25 +33,25 @@ type ModelSpec struct {
 	ClassName string
 }
 
-func (f *ModelSpec) SetTemplateDefaults() error {
+func (f *ModelStatus) SetTemplateDefaults() error {
 	if f.ClassName == "" {
 		return fmt.Errorf("invalid operator name")
 	}
 
 	if f.Path == "" {
-		f.Path = util.PrependJavaPath(f.ClassName+"Spec.java", util.AsPath(f.Package))
+		f.Path = util.PrependJavaPath(f.ClassName+"Status.java", util.AsPath(f.Package))
 	}
 
-	f.TemplateBody = modelSpecTemplate
+	f.TemplateBody = modelStatusTemplate
 
 	return nil
 }
 
 // TODO: pass in the name of the operator i.e. replace Memcached
-const modelSpecTemplate = `package {{ .Package }};
+const modelStatusTemplate = `package {{ .Package }};
 
-public class {{ .ClassName }}Spec {
+public class {{ .ClassName }}Status {
 
-    // Add Spec information here
+    // Add Status information here
 }
 `
