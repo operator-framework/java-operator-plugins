@@ -8,7 +8,7 @@ require (
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.18.1
 	k8s.io/apimachinery v0.24.0
-	sigs.k8s.io/kubebuilder/v3 v3.0.0-alpha.0.0.20220607134920-f19b01da2468
+	sigs.k8s.io/kubebuilder/v3 v3.0.0-alpha.0.0.20220608134342-eea565cb3f50
 )
 
 require (
