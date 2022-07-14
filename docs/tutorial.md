@@ -806,8 +806,8 @@ Before running below command export environment variables as shown below.
 ```
 $ export USERNAME=<container-registry-username>
 $ export VERSION=0.0.1
-$ export IMG=docker.io/$USERNAME/memcached-operator:v$VERSION // location where your operator image is hosted
-$ export BUNDLE_IMG=docker.io/$USERNAME/memcached-operator-bundle:v$VERSION // location where your bundle will be hosted
+$ export IMG=docker.io/$USERNAME/memcached-quarkus-operator:v$VERSION // location where your operator image is hosted
+$ export BUNDLE_IMG=docker.io/$USERNAME/memcached-quarkus-operator-bundle:v$VERSION // location where your bundle will be hosted
 ```
 
 ```
@@ -818,7 +818,7 @@ Finally, run your bundle. If your bundle image is hosted in a registry that is p
 
 
 ```
-operator-sdk run bundle <some-registry>/memcached-operator-bundle:v0.0.1
+operator-sdk run bundle <some-registry>/memcached-quarkus-operator-bundle:v0.0.1
 ```
 
 The result of the above command is as below:
