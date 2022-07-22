@@ -84,18 +84,11 @@ public class MemcachedReconciler implements Reconciler<Memcached> {
   }
 
   private Deployment createMemcachedDeployment(Memcached m) {
-    return new DeploymentBuilder()
+    Deployment deployment = new DeploymentBuilder()
         .withMetadata(
             new ObjectMetaBuilder()
                 .withName(m.getMetadata().getName())
                 .withNamespace(m.getMetadata().getNamespace())
-                .withOwnerReferences(
-                    new OwnerReferenceBuilder()
-                        .withApiVersion("v1")
-                        .withKind("Memcached")
-                        .withName(m.getMetadata().getName())
-                        .withUid(m.getMetadata().getUid())
-                        .build())
                 .build())
         .withSpec(
             new DeploymentSpecBuilder()
@@ -123,6 +116,8 @@ public class MemcachedReconciler implements Reconciler<Memcached> {
                         .build())
                 .build())
         .build();
+    deployment.addOwnerReference(m);
+    return deployment;
   }
 
 }
