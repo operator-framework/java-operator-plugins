@@ -77,9 +77,10 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
       <groupId>io.quarkiverse.operatorsdk</groupId>
       <artifactId>quarkus-operator-sdk</artifactId>
     </dependency>
+    <!-- Needed to generate OLM bundle. If you're not interested in this, you can remove this dependency -->
     <dependency>
       <groupId>io.quarkiverse.operatorsdk</groupId>
-      <artifactId>quarkus-operator-sdk-csv-generator</artifactId>
+      <artifactId>quarkus-operator-sdk-bundle-generator</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
