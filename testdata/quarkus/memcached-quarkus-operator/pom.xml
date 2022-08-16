@@ -16,7 +16,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus-sdk.version>4.0.0</quarkus-sdk.version>
-    <quarkus.version>2.7.5.Final</quarkus.version>
+    <quarkus.version>2.11.2.Final</quarkus.version>
   </properties>
 
   <dependencyManagement>
