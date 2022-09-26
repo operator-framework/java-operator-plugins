@@ -51,14 +51,14 @@ const pomxmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
   <version>{{ .OperatorVersion }}-SNAPSHOT</version>
   <packaging>jar</packaging>
   <properties>
-    <compiler-plugin.version>3.8.1</compiler-plugin.version>
+    <compiler-plugin.version>3.10.1</compiler-plugin.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus-sdk.version>4.0.1</quarkus-sdk.version>
-    <quarkus.version>2.12.2.Final</quarkus.version>
+    <quarkus.version>2.12.3.Final</quarkus.version>
   </properties>
 
   <dependencyManagement>
