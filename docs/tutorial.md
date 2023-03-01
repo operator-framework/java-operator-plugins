@@ -43,7 +43,7 @@ An operator isn't much good without an API to work with. Create a new Custom
 Resource Definition (CRD) API with group `cache`, version `v1`, and Kind
 `Memcached`.
 
-Use the `create api` command to scaffold the `MemcachedController`,
+Use the `create api` command to scaffold the `MemcachedReconciler`,
 `MemcachedSpec`, `MemcachedStatus` and `Memcached`. These files represent the
 API. The plugin may show some debug statements which is normal as it is still in
 the alpha state.
@@ -67,7 +67,7 @@ $ tree
         │   └── com
         │       └── example
         │           ├── Memcached.java
-        │           ├── MemcachedController.java
+        │           ├── MemcachedReconciler.java
         │           ├── MemcachedSpec.java
         │           └── MemcachedStatus.java
         └── resources
@@ -87,7 +87,7 @@ The `java-operator-plugins` project uses the APIs from [java-operator-sdk](https
 
 #### `MemcachedSpec`
 
-Initially, the scaffolded Spec file will be empty. The operator developer needs
+Initially, the scaffolded Spec file, `MemcachedSpec`, will be empty. The operator developer needs
 to add attributes to this file according to their needs. For the `Memcached`
 example, we will add the size field as shown in the example below.
 
@@ -251,11 +251,11 @@ By now we have the API defined in `Memcached.java`, `MemcachedSpec.java`,
 `MemcachedStatus.java`. We also have the CRD and the sample Custom Resource.
 This isn't enough, we still need a controller to reconcile these items.
 
-The `create api` command will have scaffolded a skeleton `MemcachedController.java`.
+The `create api` command will have scaffolded a skeleton `MemcachedReconciler.java`.
 This controller implements the `ResourceController` interface from the
 `java-operator-sdk`. This interface has some important and useful methods.
 
-Initially the `MemcachedController.java` will contain the empty stubs for
+Initially the `MemcachedReconciler.java` will contain the empty stubs for
 `reconcile`. In this section we will fill in
 the controller logic in these methods. We will also add a
 `createMemcachedDeployment` method that will create the Deployment for our
@@ -268,7 +268,7 @@ changes to the Deployment.
 ### reconcile
 
 In this section we will focus on implementing the `reconcile`
-method. In the `MemcachedController.java` you will see a `// TODO: fill in logic`
+method. In the `MemcachedReconciler.java` you will see a `// TODO: fill in logic`
 comment. At this line we will first add code to get the Deployment.
 
 ```
@@ -303,7 +303,7 @@ else we need to return `UpdateControl.updateStatus(resource)`
 
 After getting the Deployment, we get the current and required replicas. Add the
 following lines below the `if (deployment == null)` block in your
-`MemcachedController.java` file.
+`MemcachedReconciler.java` file.
 
 ```
         int currentReplicas = deployment.getSpec().getReplicas();
@@ -327,7 +327,7 @@ The above sections will cover reconciling any `size` changes to the Spec. In the
 next section, we will look at handling the changes to the `nodes` list from the
 Status.
 
-Let's get the list of pods and their names. In the `MemcachedController.java`,
+Let's get the list of pods and their names. In the `MemcachedReconciler.java`,
 add the following code below the `if (currentReplicas != requiredReplicas) {`
 block.
 
@@ -443,7 +443,7 @@ In the next section, we will walk you through creating the
 
 Creating Kubernetes objects via APIs can be quite verbose which is why putting
 them in helper methods can make the code more readable. The
-`MemcachedController.java` needs to create a Deployment if it does not exist. In
+`MemcachedReconciler.java` needs to create a Deployment if it does not exist. In
 the `reconcile` we make a call to a helper,
 `createMemcachedDeployment`.
 
@@ -452,7 +452,7 @@ the [`fabric8`](https://fabric8.io/) `DeploymentBuilder` class. Notice the
 Deployment specifies the `memcached` image for the pod.
 
 Below your `labelsForMemcached(Memcached m)` block in the
-`MemcachedController.java`, add the following method.
+`MemcachedReconciler.java`, add the following method.
 
 ```
     private Deployment createMemcachedDeployment(Memcached m) {
@@ -496,11 +496,11 @@ Below your `labelsForMemcached(Memcached m)` block in the
 Now we have a `reconcile` method. It calls
 `createMemcachedDeployment` which we have implemented above.
 
-We have now implemented the `MemcachedController.java`.
+We have now implemented the `MemcachedReconciler.java`.
 
 ## Include Dependencies
 
-Please add below dependencies in `MemcachedController.java` file.
+Please add below dependencies in `MemcachedReconciler.java` file.
 
 ```
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
@@ -564,15 +564,20 @@ The following steps will show how to run your operator in the cluster.
 
 The `java-operator-plugins` project will scaffold out a Makefile to give
 Operator SDK users a familiar interface. Using the `docker-*` targets you can
-conveniently build your and push your operator's image to registry. In our
-example, we are using `quay.io`, but any docker registry should work.
+conveniently build and push your operator's image to a registry.
+
+To build and push the docker image, you will need to specify the name of the image, `IMG`,
+that will be built as well as the operating system, `OS`, and the architecture,
+`ARCH`, that the image will be built for. In this example, we are using
+`quay.io` as the registry the image will be pushed to, but any docker registry should work.
 
 ```
-make docker-build docker-push IMG=quay.io/YOURUSER/memcached-quarkus-operator:v0.0.1
+make docker-build docker-push IMG=quay.io/YOURUSER/memcached-quarkus-operator:v0.0.1 OS=linux ARCH=arm64
 ```
 
-This will build the docker image
-`quay.io/YOURUSER/memcached-quarkus-operator:v0.0.1` and push it to the registry.
+This will build the docker image 
+`quay.io/YOURUSER/memcached-quarkus-operator:v0.0.1` for linux/arm64 and push it
+to the `quay.io` registry.
 
 You can verify it is in your docker registry:
 
