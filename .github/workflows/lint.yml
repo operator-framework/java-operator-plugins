@@ -11,6 +11,6 @@ jobs:
         with:
           fetch-depth: 0
       - uses: actions/setup-go@v3
-      with:
-        go-version-file: "go.mod"
+        with:
+          go-version-file: "go.mod"
       - run: make lint
