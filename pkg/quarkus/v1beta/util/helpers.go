@@ -1,4 +1,4 @@
-// Copyright 2021 The Operator-SDK Authors
+// Copyright 2024 The Operator-SDK Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,13 +15,14 @@
 package util
 
 import (
-	"testing"
-
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"sigs.k8s.io/kubebuilder/v4/pkg/config"
 )
 
-func TestUtil(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "util")
+// HasDifferentCRDVersion returns true if any other CRD version is tracked in the project configuration.
+func HasDifferentCRDVersion(config config.Config, crdVersion string) bool {
+	return hasDifferentAPIVersion(config.ListCRDVersions(), crdVersion)
+}
+
+func hasDifferentAPIVersion(versions []string, version string) bool {
+	return !(len(versions) == 0 || (len(versions) == 1 && versions[0] == version))
 }

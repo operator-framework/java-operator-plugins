@@ -15,10 +15,10 @@
 package scaffolds
 
 import (
-	"sigs.k8s.io/kubebuilder/v3/pkg/config"
-	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
-	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
-	"sigs.k8s.io/kubebuilder/v3/pkg/plugins"
+	"sigs.k8s.io/kubebuilder/v4/pkg/config"
+	"sigs.k8s.io/kubebuilder/v4/pkg/machinery"
+	"sigs.k8s.io/kubebuilder/v4/pkg/model/resource"
+	"sigs.k8s.io/kubebuilder/v4/pkg/plugins"
 
 	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1beta/scaffolds/internal/templates/controller"
 	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1beta/scaffolds/internal/templates/model"
