@@ -17,8 +17,9 @@ package model
 import (
 	"fmt"
 
+	"sigs.k8s.io/kubebuilder/v4/pkg/machinery"
+
 	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1beta/scaffolds/internal/templates/util"
-	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 )
 
 var _ machinery.Template = &ModelStatus{}
