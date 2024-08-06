@@ -66,3 +66,10 @@ func (p Plugin) GetCreateAPISubcommand() plugin.CreateAPISubcommand { return &p.
 
 // // GetEditSubcommand will return the subcommand which is responsible for editing the scaffold of the project
 // func (p Plugin) GetEditSubcommand() plugin.EditSubcommand { return &p.editSubcommand }
+
+func (p Plugin) DeprecationWarning() string {
+	return "This plugin is deprecated and will be eventually removed." +
+		" It is recommended that you bootstrap your Quarkus-based operator with" +
+		" the provided Quarkus tools as described in the bootstraping instructions -" +
+		" https://github.com/quarkiverse/quarkus-operator-sdk?tab=readme-ov-file#bootstrapping-a-project."
+}
