@@ -15,10 +15,10 @@
 package v1
 
 import (
-	"sigs.k8s.io/kubebuilder/v4/pkg/config"
-	v3 "sigs.k8s.io/kubebuilder/v4/pkg/config/v3"
-	"sigs.k8s.io/kubebuilder/v4/pkg/model/stage"
-	"sigs.k8s.io/kubebuilder/v4/pkg/plugin"
+	"sigs.k8s.io/kubebuilder/v3/pkg/config"
+	v3 "sigs.k8s.io/kubebuilder/v3/pkg/config/v3"
+	"sigs.k8s.io/kubebuilder/v3/pkg/model/stage"
+	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
 )
 
 const pluginName = "quarkus.javaoperatorsdk.io"

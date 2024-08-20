@@ -17,7 +17,7 @@ package controller
 import (
 	"fmt"
 
-	"sigs.k8s.io/kubebuilder/v4/pkg/machinery"
+	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 
 	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1beta/scaffolds/internal/templates/util"
 )
