@@ -20,14 +20,13 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1beta/scaffolds"
 	"github.com/spf13/pflag"
 	"k8s.io/apimachinery/pkg/util/validation"
 
-	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1beta/scaffolds"
-
-	"sigs.k8s.io/kubebuilder/v4/pkg/config"
-	"sigs.k8s.io/kubebuilder/v4/pkg/machinery"
-	"sigs.k8s.io/kubebuilder/v4/pkg/plugin"
+	"sigs.k8s.io/kubebuilder/v3/pkg/config"
+	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
+	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
 )
 
 // This file represents the CLI for this plugin.

@@ -18,14 +18,12 @@ import (
 	"os"
 	"path/filepath"
 
-	"sigs.k8s.io/kubebuilder/v4/pkg/config"
-	"sigs.k8s.io/kubebuilder/v4/pkg/machinery"
-
 	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1beta/util"
-
-	"sigs.k8s.io/kubebuilder/v4/pkg/plugins"
+	"sigs.k8s.io/kubebuilder/v3/pkg/config"
+	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 
 	"github.com/operator-framework/java-operator-plugins/pkg/quarkus/v1beta/scaffolds/internal/templates"
+	"sigs.k8s.io/kubebuilder/v3/pkg/plugins"
 )
 
 const (
