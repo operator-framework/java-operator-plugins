@@ -1,3 +1,5 @@
+## This repository is now deprecated and it is no longer actively maintained. Please use the provided Quarkus tools as described in the bootstraping instructions - https://github.com/quarkiverse/quarkus-operator-sdk?tab=readme-ov-file#bootstrapping-a-project.
+
 <img src="https://raw.githubusercontent.com/operator-framework/operator-sdk/master/website/static/operator_logo_sdk_color.svg" height="125px"></img>
 
 # Java Operator Plugin
